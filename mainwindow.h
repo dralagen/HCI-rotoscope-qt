@@ -18,6 +18,8 @@ public:
 private slots:
     void on_actionExit_triggered();
 
+    void on_actionNew_Project_triggered();
+
 private:
     Ui::MainWindow *ui;
 };
