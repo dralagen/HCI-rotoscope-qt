@@ -96,3 +96,8 @@ void DrawingArea::undo(){
     calque = new QImage(v_calques.at(v_calques.size()-2));
     update();
 }
+
+void DrawingArea::setPenSize(int size){
+        this->penSize=size;
+        update();
+}

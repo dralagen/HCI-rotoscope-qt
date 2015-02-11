@@ -12,6 +12,7 @@ public:
     explicit DrawingArea(QWidget *parent = 0);
     ~DrawingArea();
     void undo();
+    void setPenSize(int size);
 private:
       QImage * calque;
       QVector<QImage> v_calques;

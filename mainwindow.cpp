@@ -42,3 +42,8 @@ void MainWindow::on_actionUndo_triggered()
 {
     this->ui->widgetRotoscope->undo();
 }
+
+void MainWindow::on_sizeBox_valueChanged(int arg1)
+{
+     this->ui->widgetRotoscope->setPenSize(arg1);
+}

@@ -22,6 +22,8 @@ private slots:
 
     void on_actionUndo_triggered();
 
+    void on_sizeBox_valueChanged(int arg1);
+
 private:
     Ui::MainWindow *ui;
 };
