@@ -51,6 +51,9 @@
          </property>
         </widget>
         <widget class="QPushButton" name="buttonFirstPicture">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
          <property name="geometry">
           <rect>
            <x>70</x>
@@ -125,13 +128,6 @@
           <string>/ XX</string>
          </property>
         </widget>
-       </widget>
-      </item>
-      <item row="0" column="0" rowspan="2">
-       <widget class="QWidget" name="widgetRotoscope" native="true">
-        <property name="styleSheet">
-         <string notr="true">background:grey</string>
-        </property>
        </widget>
       </item>
       <item row="0" column="1" rowspan="3">
@@ -235,6 +231,13 @@
         </widget>
        </widget>
       </item>
+      <item row="0" column="0" rowspan="2">
+       <widget class="DrawingArea" name="widgetRotoscope" native="true">
+        <property name="styleSheet">
+         <string notr="true">background:grey</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
    </layout>
@@ -245,7 +248,7 @@
      <x>0</x>
      <y>0</y>
      <width>744</width>
-     <height>19</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -350,6 +353,14 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>DrawingArea</class>
+   <extends>QWidget</extends>
+   <header location="global">drawingarea.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

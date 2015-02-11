@@ -11,14 +11,14 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = rotoscope
 TEMPLATE = app
 
-CONFIG += c++11
-
 SOURCES += main.cpp\
         mainwindow.cpp \
-    newproject.cpp
+        newproject.cpp \
+    drawingarea.cpp
 
 HEADERS  += mainwindow.h \
-    newproject.h
+            newproject.h \
+    drawingarea.h
 
 FORMS    += mainwindow.ui \
-    newproject.ui
+            newproject.ui

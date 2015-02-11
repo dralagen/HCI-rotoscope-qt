@@ -22,7 +22,7 @@ void MainWindow::on_actionExit_triggered()
 {
     exit(1);
 }
-
+MAINWINDOW_H
 void MainWindow::on_actionNew_Project_triggered()
 {
     NewProject newProject;
