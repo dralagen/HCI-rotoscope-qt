@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>744</width>
-    <height>386</height>
+    <width>1050</width>
+    <height>720</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -233,8 +233,8 @@
       </item>
       <item row="0" column="0" rowspan="2">
        <widget class="DrawingArea" name="widgetRotoscope" native="true">
-        <property name="styleSheet">
-         <string notr="true">background:grey</string>
+        <property name="autoFillBackground">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -247,7 +247,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>744</width>
+     <width>1050</width>
      <height>26</height>
     </rect>
    </property>
