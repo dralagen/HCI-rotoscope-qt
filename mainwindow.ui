@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1050</width>
+    <width>1056</width>
     <height>720</height>
    </rect>
   </property>
@@ -23,114 +23,7 @@
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0">
      <layout class="QGridLayout" name="gridLayout">
-      <item row="2" column="0">
-       <widget class="QWidget" name="widgetNav" native="true">
-        <property name="minimumSize">
-         <size>
-          <width>311</width>
-          <height>22</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>22</height>
-         </size>
-        </property>
-        <widget class="QPushButton" name="buttonPlay">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>31</width>
-           <height>22</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>|&gt;</string>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="buttonFirstPicture">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
-         <property name="geometry">
-          <rect>
-           <x>70</x>
-           <y>0</y>
-           <width>31</width>
-           <height>22</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>&lt;&lt;</string>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="buttonPreviousPicture">
-         <property name="geometry">
-          <rect>
-           <x>100</x>
-           <y>0</y>
-           <width>31</width>
-           <height>22</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>&lt;</string>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="buttonNextPicture">
-         <property name="geometry">
-          <rect>
-           <x>220</x>
-           <y>0</y>
-           <width>31</width>
-           <height>22</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>&gt;</string>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="buttonLastPicture">
-         <property name="geometry">
-          <rect>
-           <x>250</x>
-           <y>0</y>
-           <width>31</width>
-           <height>22</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>&gt;&gt;</string>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="inputCurrentPicture">
-         <property name="geometry">
-          <rect>
-           <x>140</x>
-           <y>0</y>
-           <width>31</width>
-           <height>22</height>
-          </rect>
-         </property>
-        </widget>
-        <widget class="QLabel" name="labelMaxPicture">
-         <property name="geometry">
-          <rect>
-           <x>180</x>
-           <y>0</y>
-           <width>41</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>/ XX</string>
-         </property>
-        </widget>
-       </widget>
-      </item>
-      <item row="0" column="1" rowspan="3">
+      <item row="1" column="1">
        <widget class="QWidget" name="widgetTools" native="true">
         <property name="minimumSize">
          <size>
@@ -144,13 +37,16 @@
           <height>16777215</height>
          </size>
         </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
         <widget class="QGroupBox" name="groupTools">
          <property name="geometry">
           <rect>
            <x>0</x>
            <y>10</y>
            <width>250</width>
-           <height>111</height>
+           <height>201</height>
           </rect>
          </property>
          <property name="minimumSize">
@@ -253,12 +149,77 @@
            <number>1</number>
           </property>
          </widget>
+         <widget class="QPushButton" name="colorButton2">
+          <property name="geometry">
+           <rect>
+            <x>50</x>
+            <y>170</y>
+            <width>31</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="colorButton3">
+          <property name="geometry">
+           <rect>
+            <x>90</x>
+            <y>170</y>
+            <width>31</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="colorButton4">
+          <property name="geometry">
+           <rect>
+            <x>130</x>
+            <y>170</y>
+            <width>31</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="colorButton5">
+          <property name="geometry">
+           <rect>
+            <x>170</x>
+            <y>170</y>
+            <width>31</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="colorButton6">
+          <property name="geometry">
+           <rect>
+            <x>210</x>
+            <y>170</y>
+            <width>31</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
         </widget>
         <widget class="QGroupBox" name="groupCalque">
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>150</y>
+           <y>230</y>
            <width>250</width>
            <height>121</height>
           </rect>
@@ -302,7 +263,7 @@
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>330</y>
+           <y>370</y>
            <width>231</width>
            <height>51</height>
           </rect>
@@ -314,16 +275,148 @@
           <bool>false</bool>
          </property>
         </widget>
+        <widget class="QPushButton" name="setColorButton">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>140</y>
+           <width>231</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Change Color</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="colorButton1">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>180</y>
+           <width>31</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="autoFillBackground">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
        </widget>
       </item>
-      <item row="0" column="0" rowspan="2">
-       <widget class="DrawingArea" name="widgetRotoscope" native="true">
-        <property name="autoFillBackground">
-         <bool>true</bool>
-        </property>
-       </widget>
+      <item row="1" column="0">
+       <widget class="DrawingArea" name="widgetRotoscope" native="true"/>
       </item>
      </layout>
+    </item>
+    <item row="1" column="0">
+     <widget class="QWidget" name="widgetNav" native="true">
+      <property name="minimumSize">
+       <size>
+        <width>311</width>
+        <height>22</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>22</height>
+       </size>
+      </property>
+      <widget class="QPushButton" name="buttonPlay">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>0</y>
+         <width>31</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>|&gt;</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="buttonFirstPicture">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>120</x>
+         <y>0</y>
+         <width>31</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>&lt;&lt;</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="buttonPreviousPicture">
+       <property name="geometry">
+        <rect>
+         <x>150</x>
+         <y>0</y>
+         <width>31</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>&lt;</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="buttonNextPicture">
+       <property name="geometry">
+        <rect>
+         <x>300</x>
+         <y>0</y>
+         <width>31</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>&gt;</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="buttonLastPicture">
+       <property name="geometry">
+        <rect>
+         <x>330</x>
+         <y>0</y>
+         <width>31</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>&gt;&gt;</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="inputCurrentPicture">
+       <property name="geometry">
+        <rect>
+         <x>200</x>
+         <y>0</y>
+         <width>31</width>
+         <height>22</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="labelMaxPicture">
+       <property name="geometry">
+        <rect>
+         <x>240</x>
+         <y>0</y>
+         <width>41</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>/ 0</string>
+       </property>
+      </widget>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -332,7 +425,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1050</width>
+     <width>1056</width>
      <height>26</height>
     </rect>
    </property>
