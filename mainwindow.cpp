@@ -67,10 +67,15 @@ void MainWindow::on_eraserButton_clicked()
 void MainWindow::extractPictures(QString movie,QString frequency){
 
    QString command="ffmpeg -i ";
-   QString fpsOption="-r";
-   QString output="image/%05d.png";
-    qDebug() << frequency;
-    //system("Gainsbourg.zone-telechargement.com.avi -r 1 -f image/%05d.png");
+   QString fpsOption=" -r ";
+   QString output =" /tmp/image-%05d.png";
+
+   QString extractCommand= command+movie+fpsOption+frequency+output;
+   qDebug() << extractCommand;
+   QByteArray ba = extractCommand.toLocal8Bit();
+   const char *c_extractC= ba.data();
+
+   system(c_extractC);
 
 }
 
