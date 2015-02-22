@@ -17,6 +17,7 @@ public:
     void setColor(QColor c);
     void setBackground(QString path);
     void hideBackground(bool hide);
+    QImage getLastCalque();
 
 private:
       QImage *        calque;

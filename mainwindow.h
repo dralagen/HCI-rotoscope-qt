@@ -15,6 +15,7 @@ public:
     QVector<QColor>  * v_color;
     QVector<QString> * v_path_backgrounds;
     int                current_background;
+    QVector<QImage>  * v_final_calques;
 
     explicit MainWindow(QWidget *parent = 0);
     void extractPictures(QString movie,QString freq);    

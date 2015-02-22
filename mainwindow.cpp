@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     v_color = new QVector<QColor>();
     v_path_backgrounds = new QVector<QString>();
     current_background= 0;
+    v_final_calques= new QVector<QImage>();
 }
 
 MainWindow::~MainWindow()
@@ -228,12 +229,16 @@ void MainWindow::vPathBackgroundSort(){
 }
 
 void MainWindow::on_buttonShowBackground_toggled(bool checked)
-{   qDebug()<< checked;
+{
    this->ui->widgetRotoscope->hideBackground(checked);
 }
 
 void MainWindow::on_buttonNewFrame_clicked()
 {
+    //récupération de la dernière version du calques dessiner par l'utilisateur.
+            //voir pour le dernier.
+    v_final_calques->push_back(this->ui->widgetRotoscope->getLastCalque());
+
     if(current_background < v_path_backgrounds->size()-1){
         current_background++;
       this->ui->widgetRotoscope->setBackground(v_path_backgrounds->at(current_background));

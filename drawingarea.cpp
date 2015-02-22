@@ -155,17 +155,27 @@ void DrawingArea::setBackground(QString path){
 void DrawingArea::hideBackground(bool hide){
 
     if(hide){
+        background = new QImage(*background_hided);
+        background = new QImage(background->scaled(this->size()));
+
+    }
+    else
+    {
         background_hided = new QImage(*background);
         background= new QImage(3, 3, QImage::Format_RGB32);
         background->fill(Qt::white);
         background= new QImage(background->scaled(this->size()));
 
     }
-    else
-    {
-        background = new QImage(*background_hided);
-        background = new QImage(background->scaled(this->size()));
-
-    }
     update();
+}
+
+QImage DrawingArea::getLastCalque(){
+      QImage lastCalque(QImage(calque));
+//      calque = new QImage(this->width(),this->height(),QImage::Format_ARGB32_Premultiplied);
+//      calque->fill(0);
+//      v_calques.push_back(*calque);
+
+     // update();
+   return * calque;
 }
