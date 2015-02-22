@@ -10,7 +10,6 @@
 #define TOOL_BRUSH 2
 
 //todo :
-// faire une liste des backgrounds a l'initialisation dans mainW
 // faire une liste des calques lors qu'un calque à fini d'être traitrée.
 //  export des calques traités => Qimage->save("nom du calques")
 //  voir peut être export d'un film ~
@@ -23,17 +22,23 @@ DrawingArea::DrawingArea(QWidget *parent) :
     penSize = 0;
     toolType=TOOL_NONE;
 
-
-
     calque = new QImage(this->width(),this->height(),QImage::Format_ARGB32_Premultiplied);
     //rendu transparrent du calque
     calque->fill(0);
 
-    background = new QImage("/home/david/Documents/M1ALMA/IHM/projet/images/dks.jpg");
+    background = new QImage(3, 3, QImage::Format_RGB32);
+    background->fill(Qt::white);
     //ajustement a la fenêtre de l'image de fond
     background = new QImage(background->scaled(this->size()));
+
+    //image cache de l'image de fond caché
+    background_hided = new QImage(3, 3, QImage::Format_RGB32);
+    //ajustement a la fenêtre de l'image cache de fond
+    background_hided = new QImage(background->scaled(this->size()));
+
     //initialisation au calque vide.
     v_calques.push_back(*calque);
+
 
 }
 
@@ -138,5 +143,29 @@ void DrawingArea::setPenSize(int size){
 
 void DrawingArea::setColor(QColor c){
     penColor=c;
+    update();
+}
+
+void DrawingArea::setBackground(QString path){
+    background= new QImage(path);
+    background = new QImage(background->scaled(this->size()));
+    update();
+}
+
+void DrawingArea::hideBackground(bool hide){
+
+    if(hide){
+        background_hided = new QImage(*background);
+        background= new QImage(3, 3, QImage::Format_RGB32);
+        background->fill(Qt::white);
+        background= new QImage(background->scaled(this->size()));
+
+    }
+    else
+    {
+        background = new QImage(*background_hided);
+        background = new QImage(background->scaled(this->size()));
+
+    }
     update();
 }

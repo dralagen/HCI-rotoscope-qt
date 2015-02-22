@@ -15,11 +15,14 @@ public:
     void setPenSize(int size);
     void setTooltype(int tool);
     void setColor(QColor c);
+    void setBackground(QString path);
+    void hideBackground(bool hide);
 
 private:
       QImage *        calque;
       QVector<QImage> v_calques;
       QImage *        background;
+      QImage *        background_hided;
       QPoint          fPoint;
       QPoint          sPoint;
       QColor          penColor;

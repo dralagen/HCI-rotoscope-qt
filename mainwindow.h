@@ -12,11 +12,12 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    QVector<QColor> * v_color;
+    QVector<QColor>  * v_color;
+    QVector<QString> * v_path_backgrounds;
+    int                current_background;
 
     explicit MainWindow(QWidget *parent = 0);
-    void extractPictures(QString movie,QString freq);
-
+    void extractPictures(QString movie,QString freq);    
     ~MainWindow();
 
 private slots:
@@ -34,9 +35,14 @@ private slots:
 
     void on_setColorButton_clicked();
 
+    void on_buttonShowBackground_toggled(bool checked);
+
+    void on_buttonNewFrame_clicked();
 
 private:
     Ui::MainWindow *ui;
+    void deleteTmpPictures();
+    void vPathBackgroundSort();
 };
 
 

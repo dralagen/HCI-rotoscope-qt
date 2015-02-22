@@ -5,10 +5,12 @@
 #include <iostream>
 #include <QDebug>
 #include <QColorDialog>
+#include <dirent.h>
 
 #define TOOL_ERASER 1
 #define TOOL_BRUSH 2
 
+// !NOTE! : this->ui->widgetRotoscope = DrawingArea !
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -16,7 +18,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     v_color = new QVector<QColor>();
-
+    v_path_backgrounds = new QVector<QString>();
+    current_background= 0;
 }
 
 MainWindow::~MainWindow()
@@ -40,7 +43,6 @@ void MainWindow::on_actionNew_Project_triggered()
     else {
         std::cout << "exit" << std::endl;
     }
-
 
 }
 
@@ -66,18 +68,58 @@ void MainWindow::on_eraserButton_clicked()
 
 void MainWindow::extractPictures(QString movie,QString frequency){
 
+    // nouveau projet  => suppression des images extraite d'un ancien projet
+    deleteTmpPictures();
+
    QString command="ffmpeg -i ";
    QString fpsOption=" -r ";
-   QString output =" /tmp/image-%05d.png";
+   QString output =" images/image-%05d.png";
 
    QString extractCommand= command+movie+fpsOption+frequency+output;
    qDebug() << extractCommand;
    QByteArray ba = extractCommand.toLocal8Bit();
    const char *c_extractC= ba.data();
 
+   // extraction des images par le system
    system(c_extractC);
 
+   // récupération des nom d'images,
+   // ATTENTION :les images sont pris dans le désordre
+
+   DIR * rep = opendir("./images/");
+
+   if (rep != NULL)
+   {
+       struct dirent * ent;
+       QString path= "./images/";
+
+       while ((ent = readdir(rep)) != NULL)
+       {
+
+           if(strcmp(ent->d_name, ".") != 0 && strcmp(ent->d_name, "..") != 0){
+                QString pathtmp = ent->d_name;
+                v_path_backgrounds->push_back(path+pathtmp);
+           }
+       }
+
+       closedir(rep);
+   }
+   // trie des images pour quelles soient dans le bonne ordre;
+   vPathBackgroundSort();
+
+   //on charge la 1ière images sur drawingArea en la cherchant
+   this->ui->widgetRotoscope->setBackground(v_path_backgrounds->at(current_background));
+
 }
+
+void MainWindow::deleteTmpPictures(){
+
+    //suppression du dossier d'image qui peuvent contenir d'anciennes images extraite
+    system("rm -Rf images/");
+    //recréation du dossier d'image vide
+    system("mkdir images/");
+}
+
 
 void MainWindow::on_setColorButton_clicked()
 {
@@ -149,4 +191,51 @@ void MainWindow::on_setColorButton_clicked()
 
     this->ui->widgetRotoscope->setColor(c);
 
+}
+
+void MainWindow::vPathBackgroundSort(){
+       QVector<QString> * vTmp = new QVector<QString>();
+       int img=1;
+
+    while(img != v_path_backgrounds->size()+1){
+          //todo revoir cette partie !
+            QString imgStr = "";
+          if(img<10){
+               imgStr= "0000"+QString::number(img);
+          }else if(img<100){
+              imgStr= "000"+QString::number(img);
+          }else if(img<1000){
+               imgStr= "00"+QString::number(img);
+          }else if(img<10000){
+              imgStr= "0"+QString::number(img);
+          }else{
+               imgStr= ""+QString::number(img);
+          }
+
+
+
+        for (int x = 0; x < v_path_backgrounds->size()-1 ; ++x) {
+
+            if(v_path_backgrounds->at(x).contains(imgStr)){
+
+                vTmp->push_back(v_path_backgrounds->at(x));
+             }
+        }
+        img++;
+    }
+    v_path_backgrounds=vTmp;
+
+}
+
+void MainWindow::on_buttonShowBackground_toggled(bool checked)
+{   qDebug()<< checked;
+   this->ui->widgetRotoscope->hideBackground(checked);
+}
+
+void MainWindow::on_buttonNewFrame_clicked()
+{
+    if(current_background < v_path_backgrounds->size()-1){
+        current_background++;
+      this->ui->widgetRotoscope->setBackground(v_path_backgrounds->at(current_background));
+   }
 }
