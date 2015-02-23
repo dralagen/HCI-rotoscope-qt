@@ -109,6 +109,9 @@ void MainWindow::extractPictures(QString movie,QString frequency){
    // trie des images pour quelles soient dans le bonne ordre;
    vPathBackgroundSort();
 
+   //on initialise le vecteur de calque avec des calques vides
+    initVCalques();
+
    //on charge la 1ière images sur drawingArea en la cherchant
    this->ui->widgetRotoscope->setBackground(v_path_backgrounds->at(current_background));
 
@@ -258,8 +261,6 @@ void MainWindow::on_actionExport_to_Pictures_triggered()
 
 }
 
-
-
 void MainWindow::on_colorButton1_clicked()
 {   if(!v_color->isEmpty()){
         this->ui->widgetRotoscope->setPenColor(v_color->at(0));
@@ -297,14 +298,15 @@ void MainWindow::on_colorButton6_clicked()
     }
 }
 
-//todo: utilisation de setCalque pour retourner sur l'ancien calque.
 void MainWindow::on_inputCurrentPicture_editingFinished()
 {
     int imgNb = this->ui->inputCurrentPicture->text().toInt()-1;
 
-    // on retrouve la dernière version du calque correspondant à l'image.
+
     // un calque par background donc l'index i pour calque = index i pour background
    if( imgNb < v_final_calques->size()){
+
+     // on retrouve la dernière version du calque correspondant à l'image.
      this->ui->widgetRotoscope->setCalque(v_final_calques->at(imgNb));
      this->ui->widgetRotoscope->setBackground(v_path_backgrounds->at(imgNb));
    }
@@ -316,9 +318,15 @@ void MainWindow::on_inputCurrentPicture_editingFinished()
 void MainWindow::on_buttonNextPicture_clicked()
 {
     int imgSelec = this->ui->inputCurrentPicture->text().toInt()+1;
-    if(imgSelec <= v_final_calques->size()){
+    if(imgSelec <= v_final_calques->size()+1){
         this->ui->inputCurrentPicture->setText(QString::number(imgSelec));
-         // on met a jour l'image/le calque afficher
+         //mise a jour de l'état du calque avant de passer a l'image suivante
+        if(v_final_calques->size()< imgSelec-1 ){
+            v_final_calques->push_back(this->ui->widgetRotoscope->getLastCalque());
+         }else{
+            v_final_calques->replace(imgSelec-1,this->ui->widgetRotoscope->getLastCalque());
+        }
+        // on met a jour l'image/le calque afficher
          on_inputCurrentPicture_editingFinished();
     }
 
@@ -326,6 +334,12 @@ void MainWindow::on_buttonNextPicture_clicked()
 
 void MainWindow::on_buttonLastPicture_clicked()
 {
+    //mise a jour de l'état du calque avant de passer a la dernière image
+    int i= this->ui->inputCurrentPicture->text().toInt()-1;
+
+    v_final_calques->replace(i,this->ui->widgetRotoscope->getLastCalque());
+
+    //maj de l'interface
     this->ui->inputCurrentPicture->setText(QString::number(v_final_calques->size()+1));
     on_inputCurrentPicture_editingFinished();
 }
@@ -334,13 +348,28 @@ void MainWindow::on_buttonPreviousPicture_clicked()
 {
     int imgSelec = this->ui->inputCurrentPicture->text().toInt()-1;
         if(imgSelec>0){
+
                this->ui->inputCurrentPicture->setText(QString::number(imgSelec));
-                on_inputCurrentPicture_editingFinished();
+                //mise a jour de l'état du calque avant de passer a l'image précédente
+                if(v_final_calques->size()< imgSelec+1){
+                    v_final_calques->push_back(this->ui->widgetRotoscope->getLastCalque());
+                }else{
+                    v_final_calques->replace(imgSelec,this->ui->widgetRotoscope->getLastCalque());
+                }
+                    on_inputCurrentPicture_editingFinished();
         }
 }
 
 void MainWindow::on_buttonFirstPicture_clicked()
 {
+    //mise a jour de l'état du calque avant de passer a la dernière image
+    int i= this->ui->inputCurrentPicture->text().toInt()-1;
+     if(v_final_calques->size() < i+1){
+            //il n'y a pas encore
+         v_final_calques->push_back(this->ui->widgetRotoscope->getLastCalque());
+    }else{
+         v_final_calques->replace(i,this->ui->widgetRotoscope->getLastCalque());
+     }
     this->ui->inputCurrentPicture->setText(QString::number(1));
     on_inputCurrentPicture_editingFinished();
 

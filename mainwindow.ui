@@ -44,9 +44,9 @@
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>10</y>
+           <y>0</y>
            <width>250</width>
-           <height>201</height>
+           <height>211</height>
           </rect>
          </property>
          <property name="minimumSize">
@@ -67,7 +67,7 @@
          <widget class="QPushButton" name="brushButton">
           <property name="geometry">
            <rect>
-            <x>0</x>
+            <x>10</x>
             <y>30</y>
             <width>51</width>
             <height>41</height>
@@ -113,7 +113,7 @@
          <widget class="QPushButton" name="eraserButton">
           <property name="geometry">
            <rect>
-            <x>60</x>
+            <x>70</x>
             <y>30</y>
             <width>51</width>
             <height>41</height>
@@ -153,7 +153,7 @@
           <property name="geometry">
            <rect>
             <x>50</x>
-            <y>170</y>
+            <y>180</y>
             <width>31</width>
             <height>21</height>
            </rect>
@@ -166,7 +166,7 @@
           <property name="geometry">
            <rect>
             <x>90</x>
-            <y>170</y>
+            <y>180</y>
             <width>31</width>
             <height>21</height>
            </rect>
@@ -179,7 +179,7 @@
           <property name="geometry">
            <rect>
             <x>130</x>
-            <y>170</y>
+            <y>180</y>
             <width>31</width>
             <height>21</height>
            </rect>
@@ -192,7 +192,7 @@
           <property name="geometry">
            <rect>
             <x>170</x>
-            <y>170</y>
+            <y>180</y>
             <width>31</width>
             <height>21</height>
            </rect>
@@ -205,10 +205,26 @@
           <property name="geometry">
            <rect>
             <x>210</x>
-            <y>170</y>
+            <y>180</y>
             <width>31</width>
             <height>21</height>
            </rect>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="colorButton1">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>180</y>
+            <width>31</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
           </property>
           <property name="text">
            <string/>
@@ -221,7 +237,7 @@
            <x>0</x>
            <y>230</y>
            <width>250</width>
-           <height>161</height>
+           <height>181</height>
           </rect>
          </property>
          <property name="minimumSize">
@@ -242,22 +258,22 @@
          <widget class="QLabel" name="label_2">
           <property name="geometry">
            <rect>
-            <x>0</x>
+            <x>10</x>
             <y>30</y>
-            <width>181</width>
+            <width>201</width>
             <height>18</height>
            </rect>
           </property>
           <property name="text">
-           <string>number of visible drawing:</string>
+           <string>number of visible drawing    :</string>
           </property>
          </widget>
          <widget class="QTextEdit" name="visibleDrawing">
           <property name="geometry">
            <rect>
-            <x>200</x>
+            <x>210</x>
             <y>20</y>
-            <width>41</width>
+            <width>31</width>
             <height>31</height>
            </rect>
           </property>
@@ -265,35 +281,22 @@
          <widget class="QLabel" name="label_3">
           <property name="geometry">
            <rect>
-            <x>0</x>
+            <x>10</x>
             <y>60</y>
             <width>241</width>
-            <height>16</height>
+            <height>31</height>
            </rect>
           </property>
           <property name="text">
-           <string>frequency of drawing  inside </string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="label_4">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>80</y>
-            <width>181</width>
-            <height>18</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>the cartoon                       :</string>
+           <string>frequency of drawing            :</string>
           </property>
          </widget>
          <widget class="QTextEdit" name="freqDrawing">
           <property name="geometry">
            <rect>
-            <x>200</x>
-            <y>70</y>
-            <width>41</width>
+            <x>210</x>
+            <y>60</y>
+            <width>31</width>
             <height>31</height>
            </rect>
           </property>
@@ -326,22 +329,6 @@
          </property>
          <property name="text">
           <string>Change Color</string>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="colorButton1">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>180</y>
-           <width>31</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="autoFillBackground">
-          <bool>false</bool>
-         </property>
-         <property name="text">
-          <string/>
          </property>
         </widget>
         <widget class="QPushButton" name="buttonShowBackground">
@@ -460,6 +447,9 @@
          <width>31</width>
          <height>31</height>
         </rect>
+       </property>
+       <property name="text">
+        <string>0</string>
        </property>
       </widget>
       <widget class="QLabel" name="labelMaxPicture">

@@ -68,7 +68,7 @@ private:
     Ui::MainWindow *ui;
     void deleteTmpPictures();
     void vPathBackgroundSort();
-
+    void initVCalques();
     QString outputBasedir = "/tmp/rotoscope/";
 };
 

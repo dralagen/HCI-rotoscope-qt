@@ -177,11 +177,12 @@ void DrawingArea::hideBackground(bool hide){
 }
 
 QImage DrawingArea::getLastCalque(){
+
       QImage * lastCalque= new QImage(*calque);
       calque = new QImage(this->width(),this->height(),QImage::Format_ARGB32_Premultiplied);
       calque->fill(0);
       v_calques.push_back(*calque);
 
-     // update();
+      update();
    return * lastCalque;
 }
