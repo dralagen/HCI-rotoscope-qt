@@ -74,9 +74,10 @@ void MainWindow::extractPictures(QString movie,QString frequency){
 
    QString command="ffmpeg -i ";
    QString fpsOption=" -r ";
-   QString output =" images/image-%05d.png";
+   QString outputFormat = " -f image2 ";
+   QString output ="%05d.png";
 
-   QString extractCommand= command+movie+fpsOption+frequency+output;
+   QString extractCommand= command+movie+fpsOption+frequency+outputFormat+outputBasedir+output;
    qDebug() << extractCommand;
    QByteArray ba = extractCommand.toLocal8Bit();
    const char *c_extractC= ba.data();
@@ -87,19 +88,18 @@ void MainWindow::extractPictures(QString movie,QString frequency){
    // récupération des nom d'images,
    // ATTENTION :les images sont pris dans le désordre
 
-   DIR * rep = opendir("./images/");
+   DIR * rep = opendir(outputBasedir.toStdString().data());
 
    if (rep != NULL)
    {
        struct dirent * ent;
-       QString path= "./images/";
 
        while ((ent = readdir(rep)) != NULL)
        {
 
            if(strcmp(ent->d_name, ".") != 0 && strcmp(ent->d_name, "..") != 0){
                 QString pathtmp = ent->d_name;
-                v_path_backgrounds->push_back(path+pathtmp);
+                v_path_backgrounds->push_back(outputBasedir+pathtmp);
            }
        }
 
@@ -116,9 +116,9 @@ void MainWindow::extractPictures(QString movie,QString frequency){
 void MainWindow::deleteTmpPictures(){
 
     //suppression du dossier d'image qui peuvent contenir d'anciennes images extraite
-    system("rm -Rf images/");
+    system(QString("rm -Rf "+outputBasedir).toStdString().data());
     //recréation du dossier d'image vide
-    system("mkdir images/");
+    system(QString("mkdir "+outputBasedir).toStdString().data());
 }
 
 
