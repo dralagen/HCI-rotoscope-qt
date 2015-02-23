@@ -59,24 +59,14 @@ void DrawingArea::paintEvent(QPaintEvent *event){
     c_painter.setPen(linepen);
     //painter.save();
 
-    switch (toolType) {
-    case TOOL_BRUSH:
-
-        if (fPoint.x() != 0 && fPoint.y()!=0 && sPoint.y()!=0 && sPoint.x()!=0){
-           // on dessine la ligne entre 2 point (très proche)
-            c_painter.drawLine(fPoint,sPoint);
-        }
-
-        break;
-    //voir alpha du calque et création d'une gomme
-    case TOOL_ERASER:
-
-        break;
-    default:
-
-        break;
+    if (toolType == TOOL_ERASER) {
+        c_painter.setCompositionMode(QPainter::CompositionMode_Clear);
     }
 
+    if (fPoint.x() != 0 && fPoint.y()!=0 && sPoint.y()!=0 && sPoint.x()!=0){
+       // on dessine la ligne entre 2 point (très proche)
+        c_painter.drawLine(fPoint,sPoint);
+    }
 
     // on dessine sur le widget pour voir l'état courant du dessin
     QPainter widgetPainter(this);
