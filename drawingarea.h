@@ -14,8 +14,9 @@ public:
     void undo();
     void setPenSize(int size);
     void setTooltype(int tool);
-    void setColor(QColor c);
+    void setPenColor(QColor c);
     void setBackground(QString path);
+    void setCalque(QImage newCalque);
     void hideBackground(bool hide);
     QImage getLastCalque();
 

@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     v_path_backgrounds = new QVector<QString>();
     current_background= 0;
     v_final_calques= new QVector<QImage>();
+    setWindowTitle("Rotoscope Project");
 }
 
 MainWindow::~MainWindow()
@@ -190,7 +191,7 @@ void MainWindow::on_setColorButton_clicked()
     }
 
 
-    this->ui->widgetRotoscope->setColor(c);
+    this->ui->widgetRotoscope->setPenColor(c);
 
 }
 
@@ -213,8 +214,6 @@ void MainWindow::vPathBackgroundSort(){
                imgStr= ""+QString::number(img);
           }
 
-
-
         for (int x = 0; x < v_path_backgrounds->size()-1 ; ++x) {
 
             if(v_path_backgrounds->at(x).contains(imgStr)){
@@ -226,6 +225,9 @@ void MainWindow::vPathBackgroundSort(){
     }
     v_path_backgrounds=vTmp;
 
+    //incrémentation du nombre de calque pour la première image charger
+    this->ui->inputCurrentPicture->setText(QString::number(v_final_calques->size()+1));
+    this->ui->labelMaxPicture->setText("/"+QString::number(v_final_calques->size()+1));
 }
 
 void MainWindow::on_buttonShowBackground_toggled(bool checked)
@@ -243,4 +245,105 @@ void MainWindow::on_buttonNewFrame_clicked()
         current_background++;
       this->ui->widgetRotoscope->setBackground(v_path_backgrounds->at(current_background));
    }
+    this->ui->inputCurrentPicture->setText(QString::number(v_final_calques->size()+1));
+    this->ui->labelMaxPicture->setText("/"+QString::number(v_final_calques->size()+1));
 }
+
+void MainWindow::on_actionExport_to_Pictures_triggered()
+{   //affichage d'un endroit ou les sauvegarder.
+        qDebug()<< "enregistrement";
+    for (int x = 0; x < v_final_calques->size(); ++x) {
+        v_final_calques->at(x).save("calque"+QString::number(x)+".png");
+    }
+
+}
+
+
+
+void MainWindow::on_colorButton1_clicked()
+{   if(!v_color->isEmpty()){
+        this->ui->widgetRotoscope->setPenColor(v_color->at(0));
+      }
+}
+
+
+void MainWindow::on_colorButton2_clicked()
+{  if(v_color->size()>=2){
+        this->ui->widgetRotoscope->setPenColor(v_color->at(1));
+    }
+ }
+
+void MainWindow::on_colorButton3_clicked()
+{  if(v_color->size()>=3){
+        this->ui->widgetRotoscope->setPenColor(v_color->at(2));
+    }
+}
+
+void MainWindow::on_colorButton4_clicked()
+{ if(v_color->size()>=4){
+        this->ui->widgetRotoscope->setPenColor(v_color->at(3));
+    }
+}
+
+void MainWindow::on_colorButton5_clicked()
+{   if(v_color->size()>=5){
+        this->ui->widgetRotoscope->setPenColor(v_color->at(4));
+    }
+}
+
+void MainWindow::on_colorButton6_clicked()
+{  if(v_color->size()>=6){
+     this->ui->widgetRotoscope->setPenColor(v_color->at(5));
+    }
+}
+
+//todo: utilisation de setCalque pour retourner sur l'ancien calque.
+void MainWindow::on_inputCurrentPicture_editingFinished()
+{
+    int imgNb = this->ui->inputCurrentPicture->text().toInt()-1;
+
+    // on retrouve la dernière version du calque correspondant à l'image.
+    // un calque par background donc l'index i pour calque = index i pour background
+   if( imgNb < v_final_calques->size()){
+     this->ui->widgetRotoscope->setCalque(v_final_calques->at(imgNb));
+     this->ui->widgetRotoscope->setBackground(v_path_backgrounds->at(imgNb));
+   }
+}
+
+
+//navigation
+
+void MainWindow::on_buttonNextPicture_clicked()
+{
+    int imgSelec = this->ui->inputCurrentPicture->text().toInt()+1;
+    if(imgSelec <= v_final_calques->size()){
+        this->ui->inputCurrentPicture->setText(QString::number(imgSelec));
+         // on met a jour l'image/le calque afficher
+         on_inputCurrentPicture_editingFinished();
+    }
+
+}
+
+void MainWindow::on_buttonLastPicture_clicked()
+{
+    this->ui->inputCurrentPicture->setText(QString::number(v_final_calques->size()+1));
+    on_inputCurrentPicture_editingFinished();
+}
+
+void MainWindow::on_buttonPreviousPicture_clicked()
+{
+    int imgSelec = this->ui->inputCurrentPicture->text().toInt()-1;
+        if(imgSelec>0){
+               this->ui->inputCurrentPicture->setText(QString::number(imgSelec));
+                on_inputCurrentPicture_editingFinished();
+        }
+}
+
+void MainWindow::on_buttonFirstPicture_clicked()
+{
+    this->ui->inputCurrentPicture->setText(QString::number(1));
+    on_inputCurrentPicture_editingFinished();
+
+}
+
+

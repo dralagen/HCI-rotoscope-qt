@@ -141,8 +141,14 @@ void DrawingArea::setPenSize(int size){
     update();
 }
 
-void DrawingArea::setColor(QColor c){
+void DrawingArea::setPenColor(QColor c){
     penColor=c;
+    update();
+}
+
+void DrawingArea::setCalque(QImage newCalque){
+    calque = new QImage(newCalque);
+    calque = new QImage(calque->scaled(this->size()));
     update();
 }
 
@@ -171,11 +177,11 @@ void DrawingArea::hideBackground(bool hide){
 }
 
 QImage DrawingArea::getLastCalque(){
-      QImage lastCalque(QImage(calque));
-//      calque = new QImage(this->width(),this->height(),QImage::Format_ARGB32_Premultiplied);
-//      calque->fill(0);
-//      v_calques.push_back(*calque);
+      QImage * lastCalque= new QImage(*calque);
+      calque = new QImage(this->width(),this->height(),QImage::Format_ARGB32_Premultiplied);
+      calque->fill(0);
+      v_calques.push_back(*calque);
 
      // update();
-   return * calque;
+   return * lastCalque;
 }
