@@ -16,9 +16,12 @@ public:
     QVector<QString> * v_path_backgrounds;
     int                current_background;
     QVector<QImage>  * v_final_calques;
+    int                nb_frame;
+    bool               background_showed;
 
     explicit MainWindow(QWidget *parent = 0);
-    void extractPictures(QString movie,QString freq);    
+    void extractPictures(QString movie,QString freq);
+    void updateCalque(int i);
     ~MainWindow();
 
 private slots:

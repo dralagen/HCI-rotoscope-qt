@@ -138,7 +138,7 @@ void DrawingArea::setPenColor(QColor c){
 
 void DrawingArea::setCalque(QImage newCalque){
     calque = new QImage(newCalque);
-    calque = new QImage(calque->scaled(this->size()));
+    v_calques.push_back(*calque);
     update();
 }
 
@@ -163,7 +163,7 @@ void DrawingArea::hideBackground(bool hide){
         background= new QImage(background->scaled(this->size()));
 
     }
-    update();
+     update();
 }
 
 QImage DrawingArea::getLastCalque(){
@@ -171,6 +171,7 @@ QImage DrawingArea::getLastCalque(){
       QImage * lastCalque= new QImage(*calque);
       calque = new QImage(this->width(),this->height(),QImage::Format_ARGB32_Premultiplied);
       calque->fill(0);
+      v_calques.clear();
       v_calques.push_back(*calque);
 
       update();
