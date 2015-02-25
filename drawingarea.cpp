@@ -90,27 +90,23 @@ void DrawingArea::paintEvent(QPaintEvent *event){
     if(numberOfCalqueToDraw >1 && numberOfCalqueToDraw <= v_lastcalqueToDraw.size()){
 
         if((currentCalqueNumber-numberOfCalqueToDraw)<=0){ // currentC <= nbCalqueToDraw
-            numberOfCalqueToDraw=currentCalqueNumber;
 
-            for (int i =1 ; i < numberOfCalqueToDraw; ++i) {
-                qDebug() << " currentCalque  inférieur ou égale au nombre de calque a dessiner";
-                qDebug()<< i;
+
+            for (int i =1 ; i < currentCalqueNumber; ++i) {
+
                 widgetPainter.drawImage(0,0,v_lastcalqueToDraw.at(i-1));
                 widgetPainter.drawImage(0,0,* calque);
-            }
 
+            }
+                widgetPainter.drawImage(0,0,* calque);
         }else{
-                qDebug() << "passe mais produit rien.";
-                qDebug() << "-----------------------";
-                qDebug() << currentCalqueNumber;
-                qDebug() << numberOfCalqueToDraw;
-                qDebug() << "-----------------------";
+
             for (int i =(currentCalqueNumber-numberOfCalqueToDraw) ; i < currentCalqueNumber; ++i) {
-                qDebug() << "currentCalque supérieur au nombre de calque a dessiner";
-                qDebug()<< i;
+
                 widgetPainter.drawImage(0,0,v_lastcalqueToDraw.at(i));
                 widgetPainter.drawImage(0,0,* calque);
             }
+              widgetPainter.drawImage(0,0,* calque);
         }
 
     }else{
