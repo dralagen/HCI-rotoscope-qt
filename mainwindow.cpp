@@ -285,7 +285,6 @@ void MainWindow::on_actionExport_to_Pictures_triggered()
 }
 
 
-
 void MainWindow::on_inputCurrentPicture_editingFinished()
 {
    if(this->ui->inputCurrentPicture->text().toInt() > 0){
@@ -323,7 +322,7 @@ void MainWindow::on_buttonNextPicture_clicked()
         this->ui->inputCurrentPicture->setText(QString::number(current_background+1));
 
         showCalque(current_background);
-
+        this->ui->widgetRotoscope->setCurrentCalqueNumber(this->ui->inputCurrentPicture->text().toInt());
 
     }
 
@@ -343,7 +342,7 @@ void MainWindow::on_buttonPreviousPicture_clicked()
         this->ui->inputCurrentPicture->setText(QString::number(current_background-1));
 
         showCalque(current_background-2);
-
+        this->ui->widgetRotoscope->setCurrentCalqueNumber(this->ui->inputCurrentPicture->text().toInt());
     }
 
 
@@ -458,10 +457,9 @@ void MainWindow::on_colorButton6_clicked()
     }
 }
 
-void MainWindow::on_spinBox_valueChanged(int arg1)
+void MainWindow::on_visibleDrawing_valueChanged(int arg1)
 {
     if(arg1 <= v_final_calques->size()){
         this->ui->widgetRotoscope->setDrawingCalques(* v_final_calques,arg1);
     }
 }
-

@@ -280,9 +280,6 @@
            </sizepolicy>
           </property>
           <property name="text">
-<<<<<<< HEAD
-           <string>number of visible drawing :</string>
-=======
            <string>number of visible drawing    :</string>
           </property>
          </widget>
@@ -294,13 +291,15 @@
             <width>40</width>
             <height>24</height>
            </rect>
->>>>>>> ca599bb1b3f0da81ec5d6b26bc1613a145fecdc4
           </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="minimum">
+           <number>1</number>
           </property>
          </widget>
          <widget class="QLabel" name="label_3">
@@ -319,35 +318,6 @@
            </sizepolicy>
           </property>
           <property name="text">
-<<<<<<< HEAD
-           <string>frequency of drawing         :</string>
-          </property>
-         </widget>
-         <widget class="QSpinBox" name="spinBox">
-          <property name="geometry">
-           <rect>
-            <x>200</x>
-            <y>20</y>
-            <width>41</width>
-            <height>30</height>
-           </rect>
-          </property>
-          <property name="minimum">
-           <number>1</number>
-          </property>
-         </widget>
-         <widget class="QSpinBox" name="spinBox_2">
-          <property name="geometry">
-           <rect>
-            <x>200</x>
-            <y>60</y>
-            <width>41</width>
-            <height>30</height>
-           </rect>
-          </property>
-          <property name="minimum">
-           <number>1</number>
-=======
            <string>frequency of drawing          :</string>
           </property>
          </widget>
@@ -365,7 +335,9 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
->>>>>>> ca599bb1b3f0da81ec5d6b26bc1613a145fecdc4
+          </property>
+          <property name="minimum">
+           <number>1</number>
           </property>
          </widget>
         </widget>
@@ -442,7 +414,7 @@
       <property name="minimumSize">
        <size>
         <width>311</width>
-        <height>22</height>
+        <height>32</height>
        </size>
       </property>
       <property name="maximumSize">
@@ -618,7 +590,7 @@
      <x>0</x>
      <y>0</y>
      <width>1059</width>
-     <height>19</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

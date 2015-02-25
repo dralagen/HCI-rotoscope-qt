@@ -67,10 +67,9 @@ private slots:
 
     void on_buttonPreviousPicture_clicked();
 
-
-    void on_spinBox_valueChanged(int arg1);
-
     void on_buttonPlay_clicked();
+
+    void on_visibleDrawing_valueChanged(int arg1);
 
 private:
     Ui::MainWindow *ui;
