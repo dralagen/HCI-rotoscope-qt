@@ -6,21 +6,48 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1059</width>
-    <height>735</height>
+    <width>1024</width>
+    <height>768</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
-    <width>587</width>
-    <height>373</height>
+    <width>530</width>
+    <height>615</height>
    </size>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="minimumSize">
+    <size>
+     <width>530</width>
+     <height>512</height>
+    </size>
+   </property>
    <layout class="QGridLayout" name="gridLayout_2">
+    <property name="leftMargin">
+     <number>5</number>
+    </property>
+    <property name="topMargin">
+     <number>5</number>
+    </property>
+    <property name="rightMargin">
+     <number>5</number>
+    </property>
+    <property name="bottomMargin">
+     <number>5</number>
+    </property>
+    <property name="spacing">
+     <number>5</number>
+    </property>
     <item row="0" column="0">
      <layout class="QGridLayout" name="gridLayout">
       <item row="1" column="1">
@@ -28,7 +55,7 @@
         <property name="minimumSize">
          <size>
           <width>250</width>
-          <height>312</height>
+          <height>512</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -398,8 +425,8 @@
        <widget class="DrawingArea" name="widgetRotoscope" native="true">
         <property name="minimumSize">
          <size>
-          <width>780</width>
-          <height>640</height>
+          <width>270</width>
+          <height>512</height>
          </size>
         </property>
         <property name="cursor">
@@ -413,23 +440,23 @@
      <widget class="QWidget" name="widgetNav" native="true">
       <property name="minimumSize">
        <size>
-        <width>311</width>
+        <width>510</width>
         <height>32</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
         <width>16777215</width>
-        <height>28</height>
+        <height>32</height>
        </size>
       </property>
       <widget class="QPushButton" name="buttonPlay">
        <property name="geometry">
         <rect>
-         <x>10</x>
+         <x>0</x>
          <y>0</y>
-         <width>41</width>
-         <height>31</height>
+         <width>40</width>
+         <height>30</height>
         </rect>
        </property>
        <property name="text">
@@ -452,10 +479,10 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>90</x>
+         <x>80</x>
          <y>0</y>
-         <width>41</width>
-         <height>31</height>
+         <width>40</width>
+         <height>30</height>
         </rect>
        </property>
        <property name="text">
@@ -475,10 +502,10 @@
       <widget class="QPushButton" name="buttonPreviousPicture">
        <property name="geometry">
         <rect>
-         <x>140</x>
+         <x>125</x>
          <y>0</y>
-         <width>41</width>
-         <height>31</height>
+         <width>40</width>
+         <height>30</height>
         </rect>
        </property>
        <property name="text">
@@ -498,10 +525,10 @@
       <widget class="QPushButton" name="buttonNextPicture">
        <property name="geometry">
         <rect>
-         <x>430</x>
+         <x>385</x>
          <y>0</y>
-         <width>41</width>
-         <height>31</height>
+         <width>40</width>
+         <height>30</height>
         </rect>
        </property>
        <property name="text">
@@ -521,7 +548,7 @@
       <widget class="QPushButton" name="buttonLastPicture">
        <property name="geometry">
         <rect>
-         <x>480</x>
+         <x>430</x>
          <y>0</y>
          <width>41</width>
          <height>31</height>
@@ -544,10 +571,10 @@
       <widget class="QLineEdit" name="inputCurrentPicture">
        <property name="geometry">
         <rect>
-         <x>340</x>
+         <x>295</x>
          <y>0</y>
-         <width>31</width>
-         <height>31</height>
+         <width>40</width>
+         <height>30</height>
         </rect>
        </property>
        <property name="text">
@@ -557,10 +584,10 @@
       <widget class="QLabel" name="labelMaxPicture">
        <property name="geometry">
         <rect>
-         <x>380</x>
+         <x>340</x>
          <y>0</y>
-         <width>41</width>
-         <height>31</height>
+         <width>40</width>
+         <height>30</height>
         </rect>
        </property>
        <property name="text">
@@ -570,10 +597,10 @@
       <widget class="QLabel" name="label_5">
        <property name="geometry">
         <rect>
-         <x>210</x>
+         <x>180</x>
          <y>0</y>
-         <width>121</width>
-         <height>31</height>
+         <width>120</width>
+         <height>30</height>
         </rect>
        </property>
        <property name="text">
@@ -589,8 +616,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1059</width>
-     <height>26</height>
+     <width>1024</width>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
