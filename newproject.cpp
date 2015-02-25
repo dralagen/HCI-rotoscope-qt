@@ -30,12 +30,14 @@ void NewProject::on_toolButton_clicked()
     QFileDialog fileDialog;
     fileDialog.exec();
 
-    QStringList files(fileDialog.selectedFiles());
+    if (fileDialog.result() == QDialog::Accepted) {
+        QStringList files(fileDialog.selectedFiles());
 
-    QString file(files.first());
+        QString file(files.first());
 
-    ui->inputMovie->setText(file);
-    movie = file;
+        ui->inputMovie->setText(file);
+        movie = file;
+    }
 
 }
 
