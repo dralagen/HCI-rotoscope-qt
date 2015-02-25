@@ -414,6 +414,8 @@ void MainWindow::on_buttonPlay_clicked()
 
     int savedPosition = this->ui->inputCurrentPicture->text().toInt();
     saveCalque(savedPosition);
+    int lastNbOfCalqToDraw=this->ui->visibleDrawing->text().toInt();
+    on_visibleDrawing_valueChanged(1);
 
     for (int i = 0; i < nb_frame; ++i) {
         showCalque(i);
@@ -424,7 +426,7 @@ void MainWindow::on_buttonPlay_clicked()
     showCalque(savedPosition);
 
     ui->centralwidget->setDisabled(false);
-
+    on_visibleDrawing_valueChanged(lastNbOfCalqToDraw);
 }
 
 void MainWindow::initVCalques(){
