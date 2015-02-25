@@ -22,6 +22,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     void extractPictures(QString movie, QString freq);
     void saveCalque(int i);
+    void disableMainAction(bool disable);
     ~MainWindow();
 
 private slots:

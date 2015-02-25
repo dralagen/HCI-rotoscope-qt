@@ -66,11 +66,14 @@ void DrawingArea::paintEvent(QPaintEvent *event){
         c_painter.setCompositionMode(QPainter::CompositionMode_Clear);
     }
 
-    if (fPoint.x() != 0 && fPoint.y()!=0 && sPoint.y()!=0 && sPoint.x()!=0){
-    //if (fPoint.x() != 0 && fPoint.y()!=0){
-       // on dessine la ligne entre 2 point (très proche)
-      c_painter.drawLine(fPoint,sPoint);
-        //c_painter.drawPoint(fPoint);
+    if (fPoint.x() != 0 && fPoint.y() != 0){
+        if (sPoint.x() != 0 && sPoint.y() != 0) {
+            // on dessine la ligne entre 2 point (très proche)
+            c_painter.drawLine(fPoint,sPoint);
+        } else {
+            c_painter.drawPoint(fPoint);
+        }
+
     }
 
     // on dessine sur le widget pour voir l'état courant du dessin

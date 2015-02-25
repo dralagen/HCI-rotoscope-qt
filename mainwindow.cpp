@@ -25,6 +25,12 @@ MainWindow::MainWindow(QWidget *parent) :
     nb_frame=1;
     setWindowTitle("Rotoscope Project");
     background_showed = true;
+
+    disableMainAction(true);
+    ui->buttonFirstPicture->setDisabled(true);
+    ui->buttonPreviousPicture->setDisabled(true);
+    ui->buttonLastPicture->setDisabled(true);
+    ui->buttonNextPicture->setDisabled(true);
 }
 
 MainWindow::~MainWindow()
@@ -46,11 +52,9 @@ void MainWindow::on_actionNew_Project_triggered()
         freqVideo = newProject.getFrequency().toInt();
         extractPictures(newProject.getMovie(), newProject.getFrequency());
 
+        disableMainAction(false);
+        ui->buttonNewFrame->setDisabled(false);
     }
-    else {
-        std::cout << "exit" << std::endl;
-    }
-
 }
 
 void MainWindow::on_actionUndo_triggered()
@@ -142,6 +146,22 @@ void MainWindow::showCalque(int i)
     this->ui->widgetRotoscope->setCalque(v_final_calques->at(i));
     if(background_showed){
        this->ui->widgetRotoscope->setBackground(v_path_backgrounds->at(i));
+    }
+
+    if (i > 0) {
+        this->ui->buttonFirstPicture->setDisabled(false);
+        this->ui->buttonPreviousPicture->setDisabled(false);
+    } else {
+        this->ui->buttonFirstPicture->setDisabled(true);
+        this->ui->buttonPreviousPicture->setDisabled(true);
+    }
+
+    if (i < nb_frame-1) {
+        this->ui->buttonLastPicture->setDisabled(false);
+        this->ui->buttonNextPicture->setDisabled(false);
+    } else {
+        this->ui->buttonLastPicture->setDisabled(true);
+        this->ui->buttonNextPicture->setDisabled(true);
     }
 }
 
@@ -260,18 +280,24 @@ void MainWindow::on_buttonNewFrame_clicked()
 {
     if(nb_frame<v_final_calques->size()){
         nb_frame++;
+
+
+        //récupération de la dernière version du calques dessiner par l'utilisateur.
+        //voir pour le dernier.
+        int imageI= this->ui->inputCurrentPicture->text().toInt();
+        qDebug() << " newFrame ";
+        saveCalque(imageI-1);
+
+        showCalque(nb_frame-1);
+
+        //this->ui->widgetRotoscope->setBackground(v_path_backgrounds->at(nb_frame-1));
+
+        this->ui->inputCurrentPicture->setText(QString::number(nb_frame));
+        this->ui->labelMaxPicture->setText("/"+QString::number(nb_frame));
+          this->ui->widgetRotoscope->setCurrentCalqueNumber(this->ui->inputCurrentPicture->text().toInt());
+    } else {
+        this->ui->buttonNewFrame->setDisabled(true);
     }
-    //récupération de la dernière version du calques dessiner par l'utilisateur.
-            //voir pour le dernier.
-    int imageI= this->ui->inputCurrentPicture->text().toInt();
-
-    qDebug() << " newFrame ";
-    saveCalque(imageI-1);
-    this->ui->widgetRotoscope->setBackground(v_path_backgrounds->at(nb_frame));
-
-    this->ui->inputCurrentPicture->setText(QString::number(nb_frame));
-    this->ui->labelMaxPicture->setText("/"+QString::number(nb_frame));
-    this->ui->widgetRotoscope->setCurrentCalqueNumber(this->ui->inputCurrentPicture->text().toInt());
 
 }
 
@@ -380,10 +406,11 @@ void MainWindow::on_buttonFirstPicture_clicked()
 
 }
 
-
+// TODO an action for stop annimation
 void MainWindow::on_buttonPlay_clicked()
 {
 
+    ui->centralwidget->setDisabled(true);
 
     int savedPosition = this->ui->inputCurrentPicture->text().toInt();
     saveCalque(savedPosition);
@@ -396,6 +423,7 @@ void MainWindow::on_buttonPlay_clicked()
 
     showCalque(savedPosition);
 
+    ui->centralwidget->setDisabled(false);
 
 }
 
@@ -417,6 +445,15 @@ void MainWindow::saveCalque(int i){
     v_final_calques->replace(i,this->ui->widgetRotoscope->getLastCalque());
 
 
+}
+
+void MainWindow::disableMainAction(bool disable)
+{
+    ui->menuExport->setDisabled(disable);
+    ui->actionSave->setDisabled(disable);
+    ui->actionSave_As->setDisabled(disable);
+    ui->actionUndo->setDisabled(disable);
+    ui->centralwidget->setDisabled(disable);
 }
 
 
