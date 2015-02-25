@@ -22,3 +22,14 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui \
             newproject.ui
+
+images.path    = "$${OUT_PWD}/icones"
+images.files   += icones/first.jpg
+images.files   += icones/gome.png
+images.files   += icones/last.jpg
+images.files   += icones/next.jpg
+images.files   += icones/pinceau.png
+images.files   += icones/play.jpg
+images.files   += icones/previous.jpg
+
+INSTALLS += images
