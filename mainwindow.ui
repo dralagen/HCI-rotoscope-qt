@@ -160,7 +160,7 @@
           </property>
           <property name="icon">
            <iconset>
-            <normaloff>icones/gome.jpg</normaloff>icones/gome.jpg</iconset>
+            <normaloff>icones/gome.png</normaloff>icones/gome.png</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -441,13 +441,13 @@
       <property name="minimumSize">
        <size>
         <width>510</width>
-        <height>32</height>
+        <height>35</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
         <width>16777215</width>
-        <height>32</height>
+        <height>35</height>
        </size>
       </property>
       <widget class="QPushButton" name="buttonPlay">
@@ -455,8 +455,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>40</width>
-         <height>30</height>
+         <width>45</width>
+         <height>35</height>
         </rect>
        </property>
        <property name="text">
@@ -479,9 +479,9 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>80</x>
-         <y>0</y>
-         <width>40</width>
+         <x>75</x>
+         <y>2</y>
+         <width>45</width>
          <height>30</height>
         </rect>
        </property>
@@ -503,8 +503,8 @@
        <property name="geometry">
         <rect>
          <x>125</x>
-         <y>0</y>
-         <width>40</width>
+         <y>2</y>
+         <width>45</width>
          <height>30</height>
         </rect>
        </property>
@@ -526,8 +526,8 @@
        <property name="geometry">
         <rect>
          <x>385</x>
-         <y>0</y>
-         <width>40</width>
+         <y>2</y>
+         <width>45</width>
          <height>30</height>
         </rect>
        </property>
@@ -548,10 +548,10 @@
       <widget class="QPushButton" name="buttonLastPicture">
        <property name="geometry">
         <rect>
-         <x>430</x>
-         <y>0</y>
-         <width>41</width>
-         <height>31</height>
+         <x>435</x>
+         <y>2</y>
+         <width>45</width>
+         <height>30</height>
         </rect>
        </property>
        <property name="text">
@@ -572,7 +572,7 @@
        <property name="geometry">
         <rect>
          <x>295</x>
-         <y>0</y>
+         <y>2</y>
          <width>40</width>
          <height>30</height>
         </rect>
@@ -585,7 +585,7 @@
        <property name="geometry">
         <rect>
          <x>340</x>
-         <y>0</y>
+         <y>2</y>
          <width>40</width>
          <height>30</height>
         </rect>
@@ -598,7 +598,7 @@
        <property name="geometry">
         <rect>
          <x>180</x>
-         <y>0</y>
+         <y>2</y>
          <width>120</width>
          <height>30</height>
         </rect>
