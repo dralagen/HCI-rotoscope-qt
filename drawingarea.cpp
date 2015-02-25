@@ -39,6 +39,9 @@ DrawingArea::DrawingArea(QWidget *parent) :
     //initialisation au calque vide.
     v_calques.push_back(*calque);
 
+    numberOfCalqueToDraw=1;
+
+    currentCalqueNumber=1;
 
 }
 
@@ -71,7 +74,44 @@ void DrawingArea::paintEvent(QPaintEvent *event){
     // on dessine sur le widget pour voir l'état courant du dessin
     QPainter widgetPainter(this);
     widgetPainter.drawImage(0,0,*background);
-    widgetPainter.drawImage(0,0,*calque);
+
+
+    qDebug() << "-----------------------";
+    qDebug() << currentCalqueNumber;
+    qDebug() << numberOfCalqueToDraw;
+    qDebug() << v_lastcalqueToDraw.size();
+    qDebug() << "-----------------------";
+
+    if(numberOfCalqueToDraw >1 && numberOfCalqueToDraw <= v_lastcalqueToDraw.size()){
+
+        if((currentCalqueNumber-numberOfCalqueToDraw)<=0){ // currentC <= nbCalqueToDraw
+            numberOfCalqueToDraw=currentCalqueNumber;
+
+            for (int i =1 ; i < numberOfCalqueToDraw; ++i) {
+                qDebug() << " currentCalque  inférieur ou égale au nombre de calque a dessiner";
+                qDebug()<< i;
+                widgetPainter.drawImage(0,0,v_lastcalqueToDraw.at(i-1));
+                widgetPainter.drawImage(0,0,* calque);
+            }
+
+        }else{
+                qDebug() << "passe mais produit rien.";
+                qDebug() << "-----------------------";
+                qDebug() << currentCalqueNumber;
+                qDebug() << numberOfCalqueToDraw;
+                qDebug() << "-----------------------";
+            for (int i =(currentCalqueNumber-numberOfCalqueToDraw) ; i < currentCalqueNumber; ++i) {
+                qDebug() << "currentCalque supérieur au nombre de calque a dessiner";
+                qDebug()<< i;
+                widgetPainter.drawImage(0,0,v_lastcalqueToDraw.at(i));
+                widgetPainter.drawImage(0,0,* calque);
+            }
+        }
+
+    }else{
+         widgetPainter.drawImage(0,0,* calque);
+
+    }
 
 }
 //mouvement de la sourie
@@ -177,3 +217,17 @@ QImage DrawingArea::getLastCalque(){
       update();
    return * lastCalque;
 }
+
+void DrawingArea::setDrawingCalques(QVector<QImage> v, int nb){
+    v_lastcalqueToDraw=v;
+    numberOfCalqueToDraw=nb;
+    update();
+}
+
+
+void DrawingArea::setCurrentCalqueNumber(int nb){
+   currentCalqueNumber=nb;
+   update();
+}
+
+

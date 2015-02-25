@@ -249,13 +249,15 @@ void MainWindow::on_buttonNewFrame_clicked()
     //récupération de la dernière version du calques dessiner par l'utilisateur.
             //voir pour le dernier.
     int imageI= this->ui->inputCurrentPicture->text().toInt();
-   qDebug() << " newFrame ";
+
    updateCalque(imageI-1);
 
     this->ui->widgetRotoscope->setBackground(v_path_backgrounds->at(nb_frame));
 
     this->ui->inputCurrentPicture->setText(QString::number(nb_frame));
     this->ui->labelMaxPicture->setText("/"+QString::number(nb_frame));
+    this->ui->widgetRotoscope->setCurrentCalqueNumber(this->ui->inputCurrentPicture->text().toInt());
+
 }
 
 void MainWindow::on_actionExport_to_Pictures_triggered()
@@ -276,12 +278,12 @@ void MainWindow::on_inputCurrentPicture_editingFinished()
 
         // un calque par background donc l'index i pour calque = index i pour background
        if(current_background -1 < nb_frame){
-         // on retrouve la dernière version du calque correspondant à l'image.
-            qDebug()<< "set du calque et du background : " + QString::number(current_background-1);
+         // on retrouve la dernière version du calque correspondant à l'image.         
          this->ui->widgetRotoscope->setCalque(v_final_calques->at(current_background-1));
          if(background_showed){
             this->ui->widgetRotoscope->setBackground(v_path_backgrounds->at(current_background-1));
          }
+         this->ui->widgetRotoscope->setCurrentCalqueNumber(this->ui->inputCurrentPicture->text().toInt());
       }
    }
 
@@ -300,7 +302,7 @@ void MainWindow::on_buttonNextPicture_clicked()
         current_background=this->ui->inputCurrentPicture->text().toInt();
 
         //mise a jour de l'état du calque avant de passer a l'image suivante
-        qDebug() << "next Picture";
+
         updateCalque(current_background-1);
 
         this->ui->inputCurrentPicture->setText(QString::number(current_background+1));
@@ -310,7 +312,7 @@ void MainWindow::on_buttonNextPicture_clicked()
         if(background_showed){
            this->ui->widgetRotoscope->setBackground(v_path_backgrounds->at(current_background));
         }
-
+        this->ui->widgetRotoscope->setCurrentCalqueNumber(this->ui->inputCurrentPicture->text().toInt());
     }
 
 }
@@ -321,7 +323,7 @@ void MainWindow::on_buttonPreviousPicture_clicked()
 
         current_background= this->ui->inputCurrentPicture->text().toInt();
         //mise a jour de l'état du calque avant de passer a l'image précédente
-        qDebug() << "previous picture";
+
         updateCalque(current_background-1);
 
 
@@ -332,6 +334,7 @@ void MainWindow::on_buttonPreviousPicture_clicked()
         if(background_showed){
            this->ui->widgetRotoscope->setBackground(v_path_backgrounds->at(current_background-2));
         }
+        this->ui->widgetRotoscope->setCurrentCalqueNumber(this->ui->inputCurrentPicture->text().toInt());
     }
 
 
@@ -351,7 +354,7 @@ void MainWindow::on_buttonLastPicture_clicked()
 
     //maj de l'interface
     this->ui->inputCurrentPicture->setText(QString::number(nb_frame));
-
+    this->ui->widgetRotoscope->setCurrentCalqueNumber(this->ui->inputCurrentPicture->text().toInt());
 }
 
 
@@ -369,6 +372,7 @@ void MainWindow::on_buttonFirstPicture_clicked()
 
     //maj de l'interface
     this->ui->inputCurrentPicture->setText(QString::number(1));
+    this->ui->widgetRotoscope->setCurrentCalqueNumber(this->ui->inputCurrentPicture->text().toInt());
 
 }
 void MainWindow::initVCalques(){
@@ -384,7 +388,7 @@ void MainWindow::initVCalques(){
 
 // méthode pour l'enregistrement de l'état d'un calque.
 void MainWindow::updateCalque(int i){
-    qDebug() << i;
+
     v_final_calques->replace(i,this->ui->widgetRotoscope->getLastCalque());
 
 
@@ -428,3 +432,10 @@ void MainWindow::on_colorButton6_clicked()
     }
 }
 
+
+void MainWindow::on_spinBox_valueChanged(int arg1)
+{
+    if(arg1 <= v_final_calques->size()){
+        this->ui->widgetRotoscope->setDrawingCalques(* v_final_calques,arg1);
+    }
+}

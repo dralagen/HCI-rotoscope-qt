@@ -81,7 +81,7 @@
           </property>
           <property name="icon">
            <iconset>
-            <normaloff>../pinceau.png</normaloff>../pinceau.png</iconset>
+            <normaloff>icones/pinceau.png</normaloff>icones/pinceau.png</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -127,7 +127,7 @@
           </property>
           <property name="icon">
            <iconset>
-            <normaloff>../gome.jpg</normaloff>../gome.jpg</iconset>
+            <normaloff>icones/gome.jpg</normaloff>icones/gome.jpg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -265,17 +265,7 @@
            </rect>
           </property>
           <property name="text">
-           <string>number of visible drawing    :</string>
-          </property>
-         </widget>
-         <widget class="QTextEdit" name="visibleDrawing">
-          <property name="geometry">
-           <rect>
-            <x>210</x>
-            <y>20</y>
-            <width>31</width>
-            <height>31</height>
-           </rect>
+           <string>number of visible drawing :</string>
           </property>
          </widget>
          <widget class="QLabel" name="label_3">
@@ -288,17 +278,33 @@
            </rect>
           </property>
           <property name="text">
-           <string>frequency of drawing            :</string>
+           <string>frequency of drawing         :</string>
           </property>
          </widget>
-         <widget class="QTextEdit" name="freqDrawing">
+         <widget class="QSpinBox" name="spinBox">
           <property name="geometry">
            <rect>
-            <x>210</x>
-            <y>60</y>
-            <width>31</width>
-            <height>31</height>
+            <x>200</x>
+            <y>20</y>
+            <width>41</width>
+            <height>30</height>
            </rect>
+          </property>
+          <property name="minimum">
+           <number>1</number>
+          </property>
+         </widget>
+         <widget class="QSpinBox" name="spinBox_2">
+          <property name="geometry">
+           <rect>
+            <x>200</x>
+            <y>60</y>
+            <width>41</width>
+            <height>30</height>
+           </rect>
+          </property>
+          <property name="minimum">
+           <number>1</number>
           </property>
          </widget>
         </widget>
@@ -381,7 +387,17 @@
         </rect>
        </property>
        <property name="text">
-        <string>|&gt;</string>
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../build-rotoscope-Desktop-Debug/icones/play.jpg</normaloff>../build-rotoscope-Desktop-Debug/icones/play.jpg</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>41</width>
+         <height>28</height>
+        </size>
        </property>
       </widget>
       <widget class="QPushButton" name="buttonFirstPicture">
@@ -397,7 +413,17 @@
         </rect>
        </property>
        <property name="text">
-        <string>&lt;&lt;</string>
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../build-rotoscope-Desktop-Debug/icones/first.jpg</normaloff>../build-rotoscope-Desktop-Debug/icones/first.jpg</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>41</width>
+         <height>28</height>
+        </size>
        </property>
       </widget>
       <widget class="QPushButton" name="buttonPreviousPicture">
@@ -410,7 +436,17 @@
         </rect>
        </property>
        <property name="text">
-        <string>&lt;</string>
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../build-rotoscope-Desktop-Debug/icones/previous.jpg</normaloff>../build-rotoscope-Desktop-Debug/icones/previous.jpg</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>41</width>
+         <height>27</height>
+        </size>
        </property>
       </widget>
       <widget class="QPushButton" name="buttonNextPicture">
@@ -423,7 +459,17 @@
         </rect>
        </property>
        <property name="text">
-        <string>&gt;</string>
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../build-rotoscope-Desktop-Debug/icones/next.jpg</normaloff>../build-rotoscope-Desktop-Debug/icones/next.jpg</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>41</width>
+         <height>27</height>
+        </size>
        </property>
       </widget>
       <widget class="QPushButton" name="buttonLastPicture">
@@ -436,7 +482,17 @@
         </rect>
        </property>
        <property name="text">
-        <string>&gt;&gt;</string>
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../build-rotoscope-Desktop-Debug/icones/last.jpg</normaloff>../build-rotoscope-Desktop-Debug/icones/last.jpg</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>41</width>
+         <height>27</height>
+        </size>
        </property>
       </widget>
       <widget class="QLineEdit" name="inputCurrentPicture">
