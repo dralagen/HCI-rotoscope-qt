@@ -20,8 +20,8 @@ public:
     bool               background_showed;
 
     explicit MainWindow(QWidget *parent = 0);
-    void extractPictures(QString movie,QString freq);
-    void updateCalque(int i);
+    void extractPictures(QString movie, QString freq);
+    void saveCalque(int i);
     ~MainWindow();
 
 private slots:
@@ -67,14 +67,19 @@ private slots:
 
     void on_buttonPreviousPicture_clicked();
 
+
     void on_spinBox_valueChanged(int arg1);
+
+    void on_buttonPlay_clicked();
 
 private:
     Ui::MainWindow *ui;
     void deleteTmpPictures();
+    void showCalque(int i);
     void vPathBackgroundSort();
     void initVCalques();
     QString outputBasedir = "/tmp/rotoscope/";
+    int freqVideo;
 };
 
 
