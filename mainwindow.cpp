@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QColorDialog>
 #include <dirent.h>
+#include <unistd.h>
 
 #define TOOL_ERASER 1
 #define TOOL_BRUSH 2
@@ -42,7 +43,9 @@ void MainWindow::on_actionNew_Project_triggered()
     NewProject newProject;
     newProject.exec();
     if (newProject.result() == QDialog::Accepted) {
-        extractPictures(newProject.getMovie(),newProject.getFrequency());
+        freqVideo = newProject.getFrequency().toInt();
+        extractPictures(newProject.getMovie(), newProject.getFrequency());
+
     }
     else {
         std::cout << "exit" << std::endl;
@@ -63,14 +66,18 @@ void MainWindow::on_sizeBox_valueChanged(int arg1)
 void MainWindow::on_brushButton_clicked()
 {
     this->ui->widgetRotoscope->setTooltype(TOOL_BRUSH);
+    this->ui->brushButton->setChecked(true);
+    this->ui->eraserButton->setChecked(false);
 }
 
 void MainWindow::on_eraserButton_clicked()
 {
     this->ui->widgetRotoscope->setTooltype(TOOL_ERASER);
+    this->ui->brushButton->setChecked(false);
+    this->ui->eraserButton->setChecked(true);
 }
 
-void MainWindow::extractPictures(QString movie,QString frequency){
+void MainWindow::extractPictures(QString movie, QString frequency){
 
     // nouveau projet  => suppression des images extraite d'un ancien projet
     deleteTmpPictures();
@@ -128,6 +135,14 @@ void MainWindow::deleteTmpPictures(){
     system(QString("rm -Rf "+outputBasedir).toStdString().data());
     //recréation du dossier d'image vide
     system(QString("mkdir "+outputBasedir).toStdString().data());
+}
+
+void MainWindow::showCalque(int i)
+{
+    this->ui->widgetRotoscope->setCalque(v_final_calques->at(i));
+    if(background_showed){
+       this->ui->widgetRotoscope->setBackground(v_path_backgrounds->at(i));
+    }
 }
 
 
@@ -250,7 +265,7 @@ void MainWindow::on_buttonNewFrame_clicked()
             //voir pour le dernier.
     int imageI= this->ui->inputCurrentPicture->text().toInt();
    qDebug() << " newFrame ";
-   updateCalque(imageI-1);
+   saveCalque(imageI-1);
 
     this->ui->widgetRotoscope->setBackground(v_path_backgrounds->at(nb_frame));
 
@@ -276,12 +291,9 @@ void MainWindow::on_inputCurrentPicture_editingFinished()
 
         // un calque par background donc l'index i pour calque = index i pour background
        if(current_background -1 < nb_frame){
-         // on retrouve la dernière version du calque correspondant à l'image.
-            qDebug()<< "set du calque et du background : " + QString::number(current_background-1);
-         this->ui->widgetRotoscope->setCalque(v_final_calques->at(current_background-1));
-         if(background_showed){
-            this->ui->widgetRotoscope->setBackground(v_path_backgrounds->at(current_background-1));
-         }
+           // on retrouve la dernière version du calque correspondant à l'image.
+           qDebug()<< "set du calque et du background : " + QString::number(current_background-1);
+            showCalque(current_background-1);
       }
    }
 
@@ -301,15 +313,11 @@ void MainWindow::on_buttonNextPicture_clicked()
 
         //mise a jour de l'état du calque avant de passer a l'image suivante
         qDebug() << "next Picture";
-        updateCalque(current_background-1);
+        saveCalque(current_background-1);
 
         this->ui->inputCurrentPicture->setText(QString::number(current_background+1));
 
-        // on met a jour l'image/le calque afficher
-        this->ui->widgetRotoscope->setCalque(v_final_calques->at(current_background));
-        if(background_showed){
-           this->ui->widgetRotoscope->setBackground(v_path_backgrounds->at(current_background));
-        }
+        showCalque(current_background);
 
     }
 
@@ -322,16 +330,13 @@ void MainWindow::on_buttonPreviousPicture_clicked()
         current_background= this->ui->inputCurrentPicture->text().toInt();
         //mise a jour de l'état du calque avant de passer a l'image précédente
         qDebug() << "previous picture";
-        updateCalque(current_background-1);
+        saveCalque(current_background-1);
 
 
         //maj inteface
         this->ui->inputCurrentPicture->setText(QString::number(current_background-1));
 
-        this->ui->widgetRotoscope->setCalque(v_final_calques->at(current_background-2));
-        if(background_showed){
-           this->ui->widgetRotoscope->setBackground(v_path_backgrounds->at(current_background-2));
-        }
+        showCalque(current_background-2);
     }
 
 
@@ -342,12 +347,9 @@ void MainWindow::on_buttonLastPicture_clicked()
 
     current_background=this->ui->inputCurrentPicture->text().toInt();
 
-    updateCalque(current_background-1);
+    saveCalque(current_background-1);
 
-    this->ui->widgetRotoscope->setCalque(v_final_calques->last());
-    if(background_showed){
-       this->ui->widgetRotoscope->setBackground(v_path_backgrounds->last());
-    }
+    showCalque(nb_frame-1);
 
     //maj de l'interface
     this->ui->inputCurrentPicture->setText(QString::number(nb_frame));
@@ -362,15 +364,34 @@ void MainWindow::on_buttonFirstPicture_clicked()
 
     current_background=this->ui->inputCurrentPicture->text().toInt();
 
-    this->ui->widgetRotoscope->setCalque(v_final_calques->first());
-    if(background_showed){
-       this->ui->widgetRotoscope->setBackground(v_path_backgrounds->first());
-    }
+    saveCalque(current_background-1);
+
+    showCalque(0);
 
     //maj de l'interface
     this->ui->inputCurrentPicture->setText(QString::number(1));
 
 }
+
+
+void MainWindow::on_buttonPlay_clicked()
+{
+
+
+    int savedPosition = this->ui->inputCurrentPicture->text().toInt();
+    saveCalque(savedPosition);
+
+    for (int i = 0; i < nb_frame; ++i) {
+        showCalque(i);
+        this->ui->widgetRotoscope->repaint();
+        usleep(1000000/freqVideo); // 42000 => 24 fps
+    }
+
+    showCalque(savedPosition);
+
+
+}
+
 void MainWindow::initVCalques(){
 
     for (int x = 0; x < v_path_backgrounds->size(); ++x) {
@@ -383,7 +404,7 @@ void MainWindow::initVCalques(){
 }
 
 // méthode pour l'enregistrement de l'état d'un calque.
-void MainWindow::updateCalque(int i){
+void MainWindow::saveCalque(int i){
     qDebug() << i;
     v_final_calques->replace(i,this->ui->widgetRotoscope->getLastCalque());
 
@@ -427,4 +448,3 @@ void MainWindow::on_colorButton6_clicked()
      this->ui->widgetRotoscope->setPenColor(v_color->at(5));
     }
 }
-

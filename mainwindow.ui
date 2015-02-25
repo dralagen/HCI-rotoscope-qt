@@ -89,14 +89,20 @@
             <height>41</height>
            </size>
           </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
          </widget>
          <widget class="QLabel" name="label">
           <property name="geometry">
            <rect>
             <x>10</x>
             <y>90</y>
-            <width>101</width>
-            <height>18</height>
+            <width>120</width>
+            <height>24</height>
            </rect>
           </property>
           <property name="font">
@@ -135,14 +141,17 @@
             <height>41</height>
            </size>
           </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
          </widget>
          <widget class="QSpinBox" name="sizeBox">
           <property name="geometry">
            <rect>
-            <x>120</x>
-            <y>80</y>
-            <width>48</width>
-            <height>30</height>
+            <x>130</x>
+            <y>90</y>
+            <width>40</width>
+            <height>24</height>
            </rect>
           </property>
           <property name="minimum">
@@ -154,8 +163,8 @@
            <rect>
             <x>50</x>
             <y>180</y>
-            <width>31</width>
-            <height>21</height>
+            <width>30</width>
+            <height>20</height>
            </rect>
           </property>
           <property name="text">
@@ -167,8 +176,8 @@
            <rect>
             <x>90</x>
             <y>180</y>
-            <width>31</width>
-            <height>21</height>
+            <width>30</width>
+            <height>20</height>
            </rect>
           </property>
           <property name="text">
@@ -180,8 +189,8 @@
            <rect>
             <x>130</x>
             <y>180</y>
-            <width>31</width>
-            <height>21</height>
+            <width>30</width>
+            <height>20</height>
            </rect>
           </property>
           <property name="text">
@@ -193,8 +202,8 @@
            <rect>
             <x>170</x>
             <y>180</y>
-            <width>31</width>
-            <height>21</height>
+            <width>30</width>
+            <height>20</height>
            </rect>
           </property>
           <property name="text">
@@ -206,8 +215,8 @@
            <rect>
             <x>210</x>
             <y>180</y>
-            <width>31</width>
-            <height>21</height>
+            <width>30</width>
+            <height>20</height>
            </rect>
           </property>
           <property name="text">
@@ -219,8 +228,8 @@
            <rect>
             <x>10</x>
             <y>180</y>
-            <width>31</width>
-            <height>21</height>
+            <width>30</width>
+            <height>20</height>
            </rect>
           </property>
           <property name="autoFillBackground">
@@ -260,22 +269,34 @@
            <rect>
             <x>10</x>
             <y>30</y>
-            <width>201</width>
-            <height>18</height>
+            <width>190</width>
+            <height>24</height>
            </rect>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
           <property name="text">
            <string>number of visible drawing    :</string>
           </property>
          </widget>
-         <widget class="QTextEdit" name="visibleDrawing">
+         <widget class="QSpinBox" name="visibleDrawing">
           <property name="geometry">
            <rect>
-            <x>210</x>
-            <y>20</y>
-            <width>31</width>
-            <height>31</height>
+            <x>200</x>
+            <y>30</y>
+            <width>40</width>
+            <height>24</height>
            </rect>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
          </widget>
          <widget class="QLabel" name="label_3">
@@ -283,22 +304,34 @@
            <rect>
             <x>10</x>
             <y>60</y>
-            <width>241</width>
-            <height>31</height>
+            <width>190</width>
+            <height>24</height>
            </rect>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
           <property name="text">
-           <string>frequency of drawing            :</string>
+           <string>frequency of drawing          :</string>
           </property>
          </widget>
-         <widget class="QTextEdit" name="freqDrawing">
+         <widget class="QSpinBox" name="freqDrawing">
           <property name="geometry">
            <rect>
-            <x>210</x>
+            <x>200</x>
             <y>60</y>
-            <width>31</width>
-            <height>31</height>
+            <width>40</width>
+            <height>24</height>
            </rect>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
          </widget>
         </widget>
@@ -307,12 +340,15 @@
           <rect>
            <x>10</x>
            <y>440</y>
-           <width>231</width>
-           <height>51</height>
+           <width>230</width>
+           <height>64</height>
           </rect>
          </property>
          <property name="text">
           <string>New Frame</string>
+         </property>
+         <property name="shortcut">
+          <string>N, Space, Ctrl+Space</string>
          </property>
          <property name="checkable">
           <bool>false</bool>
@@ -323,8 +359,8 @@
           <rect>
            <x>10</x>
            <y>140</y>
-           <width>231</width>
-           <height>31</height>
+           <width>230</width>
+           <height>32</height>
           </rect>
          </property>
          <property name="text">
@@ -336,8 +372,8 @@
           <rect>
            <x>10</x>
            <y>360</y>
-           <width>231</width>
-           <height>31</height>
+           <width>230</width>
+           <height>32</height>
           </rect>
          </property>
          <property name="text">
@@ -353,7 +389,17 @@
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="DrawingArea" name="widgetRotoscope" native="true"/>
+       <widget class="DrawingArea" name="widgetRotoscope" native="true">
+        <property name="minimumSize">
+         <size>
+          <width>780</width>
+          <height>640</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>CrossCursor</cursorShape>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>
@@ -488,7 +534,7 @@
      <x>0</x>
      <y>0</y>
      <width>1059</width>
-     <height>26</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
