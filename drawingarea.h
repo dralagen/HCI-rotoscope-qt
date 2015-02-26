@@ -17,11 +17,14 @@ public:
     void setPenColor(QColor c);
     void setBackground(QString path);
     void setCalque(QImage newCalque);
+    void setRatio(double r);
     void hideBackground(bool hide);
     QImage getLastCalque();
     void setDrawingCalques(QVector<QImage> v,int nb);
     void setDrawingCalques(QVector<QImage> v);
     void setCurrentCalqueNumber(int nb);
+
+    QSize sizeHint() const;
 
 private:
       QImage *        calque;
@@ -38,6 +41,8 @@ private:
       int             numberOfCalqueToDraw;
       //numero du calque courant  a partir du quel on dessine les n derniers.
       int             currentCalqueNumber;
+
+      double ratio;
 
 protected:
       void paintEvent(QPaintEvent *event);

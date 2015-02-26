@@ -48,9 +48,19 @@ void MainWindow::on_actionNew_Project_triggered()
 {
     NewProject newProject;
     newProject.exec();
-    if (newProject.result() == QDialog::Accepted) {
+    if (newProject.result() == QDialog::Accepted && newProject.getMovie() != "") {
         freqVideo = newProject.getFrequency().toInt();
         extractPictures(newProject.getMovie(), newProject.getFrequency());
+
+        QImage tmp(outputBasedir+"00001.png");
+
+        QSize s(tmp.size());
+
+        ui->widgetRotoscope->resize(s);
+        ui->widgetRotoscope->setRatio((double) s.height() / (double) s.width());
+
+        resize(std::max(ui->widgetRotoscope->width(), ui->widgetTools->width()) + ui->widgetNav->width() + 15,
+               std::max(ui->widgetRotoscope->height(), ui->widgetNav->height()) + ui->widgetTools->height() + 10);
 
         disableMainAction(false);
         ui->buttonNewFrame->setDisabled(false);
@@ -91,7 +101,7 @@ void MainWindow::extractPictures(QString movie, QString frequency){
    QString outputFormat = " -f image2 ";
    QString output ="%05d.png";
 
-   QString extractCommand= command+movie+fpsOption+frequency+outputFormat+outputBasedir+output;
+   QString extractCommand= command+"\""+movie+"\""+fpsOption+frequency+outputFormat+"\""+outputBasedir+output+"\"";
    qDebug() << extractCommand;
    QByteArray ba = extractCommand.toLocal8Bit();
    const char *c_extractC= ba.data();

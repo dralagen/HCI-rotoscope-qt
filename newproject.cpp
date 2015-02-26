@@ -28,11 +28,26 @@ QString NewProject::getFrequency(){
 void NewProject::on_toolButton_clicked()
 {
     QFileDialog fileDialog;
+    fileDialog.setWindowTitle("Open Video");
+    fileDialog.setFileMode(QFileDialog::ExistingFile);
+    fileDialog.setNameFilter("AllVideo (*.3g2 *.3gp *.asf *.avi *.flv *.m4v *.mkv *.mov *.qt *.mp4 *.m4p *.mpg *.mp2 *.mpeg *.mpe *.mpv *.m2v *.ogv *.ogg *.webm *.wmv *.yuv);;"
+                      "Cell Phone Video (*.3g2 *.3gp);;"
+                      "AVI (*.avi);;"
+                      "Flash Video (*.flv);;"
+                      "Apple Format (*.m4v);;"
+                      "Matroska (*.mkv);;"
+                      "QuickTime (*.mov *.qt);;"
+                      "MPEG-4 (*.mp4 *.m4p *.m4v);;"
+                      "MPEG-1 (*.mpg *.mp2 *.mpeg *.mpe *.mpv);;"
+                      "MPEG-2 (*.mpg *.mpeg *.m2v);;"
+                      "Ogg Video (*.ogv *.ogg);;"
+                      "WebM (*.webm);;"
+                      "Windows Media Video (*.wmv);;"
+                      "Raw video format (*.yuv)");
     fileDialog.exec();
 
     if (fileDialog.result() == QDialog::Accepted) {
         QStringList files(fileDialog.selectedFiles());
-
         QString file(files.first());
 
         ui->inputMovie->setText(file);

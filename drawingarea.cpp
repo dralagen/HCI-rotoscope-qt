@@ -17,9 +17,9 @@
 DrawingArea::DrawingArea(QWidget *parent) :
     QWidget(parent)
 {
-    this->resize(774,625);
     penColor= Qt::black;
     penSize = 0;
+    ratio = 0.0;
     toolType=TOOL_NONE;
 
     calque = new QImage(this->width(),this->height(),QImage::Format_ARGB32_Premultiplied);
@@ -136,10 +136,23 @@ void DrawingArea::mouseReleaseEvent(QMouseEvent * event){
 // en cas de redimensionnement de la fenêtre
 void DrawingArea::resizeEvent(QResizeEvent *event){
 
-    background = new QImage(background->scaled(event->size()));
-    calque = new QImage(calque->scaled(event->size()));
-    update();
+    QSize newSize(sizeHint());
+    background = new QImage(background->scaled(newSize));
+    calque = new QImage(calque->scaled(newSize));
 
+
+    updateGeometry();
+
+}
+
+QSize DrawingArea::sizeHint() const {
+    QSize s = size();
+
+    if (ratio != 0.0) {
+        s.setHeight(ratio * s.width());
+    }
+
+    return s;
 }
 
 void DrawingArea::undo(){
@@ -164,14 +177,19 @@ void DrawingArea::setPenColor(QColor c){
 }
 
 void DrawingArea::setCalque(QImage newCalque){
-    calque = new QImage(newCalque);
+    calque = new QImage(newCalque.scaled(sizeHint()));
     v_calques.push_back(*calque);
     update();
 }
 
+void DrawingArea::setRatio(double r)
+{
+    ratio = (r>=0)?r:0;
+}
+
 void DrawingArea::setBackground(QString path){
     background= new QImage(path);
-    background = new QImage(background->scaled(this->size()));
+    background = new QImage(background->scaled(sizeHint()));
     update();
 }
 
@@ -179,7 +197,7 @@ void DrawingArea::hideBackground(bool hide){
 
     if(hide){
         background = new QImage(*background_hided);
-        background = new QImage(background->scaled(this->size()));
+        background = new QImage(background->scaled(sizeHint()));
 
     }
     else
@@ -187,7 +205,7 @@ void DrawingArea::hideBackground(bool hide){
         background_hided = new QImage(*background);
         background= new QImage(3, 3, QImage::Format_RGB32);
         background->fill(Qt::white);
-        background= new QImage(background->scaled(this->size()));
+        background= new QImage(background->scaled(sizeHint()));
 
     }
      update();
