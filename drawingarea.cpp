@@ -87,11 +87,15 @@ void DrawingArea::paintEvent(QPaintEvent *event){
     qDebug() << " v_lastcalqueToDraw.size() : " << v_lastcalqueToDraw.size();
     qDebug() << "-----------------------";
 
-    for (int i = std::max((currentCalqueNumber - numberOfCalqueToDraw), 0) ; i < currentCalqueNumber-1; ++i) {
+    const int firstIndice = std::max((currentCalqueNumber - numberOfCalqueToDraw), 0);
 
+    for (int i = firstIndice; i < currentCalqueNumber-1; ++i) {
+
+        widgetPainter.setOpacity((0.4 / (double)numberOfCalqueToDraw) * (double)(i-firstIndice) + 0.4);
         widgetPainter.drawImage(0,0,v_lastcalqueToDraw.at(i));
 
     }
+    widgetPainter.setOpacity(1);
     widgetPainter.drawImage(0,0,* calque);
 
 
