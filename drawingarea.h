@@ -20,6 +20,7 @@ public:
     void hideBackground(bool hide);
     QImage getLastCalque();
     void setDrawingCalques(QVector<QImage> v,int nb);
+    void setDrawingCalques(QVector<QImage> v);
     void setCurrentCalqueNumber(int nb);
 
 private:

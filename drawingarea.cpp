@@ -82,37 +82,19 @@ void DrawingArea::paintEvent(QPaintEvent *event){
 
 
     qDebug() << "-----------------------";
-    qDebug() << currentCalqueNumber;
-    qDebug() << numberOfCalqueToDraw;
-    qDebug() << v_lastcalqueToDraw.size();
+    qDebug() << " currentCalqueNumber       : " << currentCalqueNumber;
+    qDebug() << " numberOfCalqueToDraw      : " << numberOfCalqueToDraw;
+    qDebug() << " v_lastcalqueToDraw.size() : " << v_lastcalqueToDraw.size();
     qDebug() << "-----------------------";
 
-    if(numberOfCalqueToDraw >1 && numberOfCalqueToDraw <= v_lastcalqueToDraw.size()){
+    for (int i = std::max((currentCalqueNumber - numberOfCalqueToDraw), 0) ; i < currentCalqueNumber-1; ++i) {
 
-        if((currentCalqueNumber-numberOfCalqueToDraw)<=0){ // currentC <= nbCalqueToDraw
-
-
-            for (int i =1 ; i < currentCalqueNumber; ++i) {
-
-                widgetPainter.drawImage(0,0,v_lastcalqueToDraw.at(i-1));
-                widgetPainter.drawImage(0,0,* calque);
-
-            }
-                widgetPainter.drawImage(0,0,* calque);
-        }else{
-
-            for (int i =(currentCalqueNumber-numberOfCalqueToDraw) ; i < currentCalqueNumber; ++i) {
-
-                widgetPainter.drawImage(0,0,v_lastcalqueToDraw.at(i));
-                widgetPainter.drawImage(0,0,* calque);
-            }
-              widgetPainter.drawImage(0,0,* calque);
-        }
-
-    }else{
-         widgetPainter.drawImage(0,0,* calque);
+        widgetPainter.drawImage(0,0,v_lastcalqueToDraw.at(i));
 
     }
+    widgetPainter.drawImage(0,0,* calque);
+
+
 
 }
 //mouvement de la sourie
@@ -223,6 +205,10 @@ void DrawingArea::setDrawingCalques(QVector<QImage> v, int nb){
     v_lastcalqueToDraw=v;
     numberOfCalqueToDraw=nb;
     update();
+}
+
+void DrawingArea::setDrawingCalques(QVector<QImage> v){
+    setDrawingCalques(v, numberOfCalqueToDraw);
 }
 
 

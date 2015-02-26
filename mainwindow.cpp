@@ -144,6 +144,7 @@ void MainWindow::deleteTmpPictures(){
 void MainWindow::showCalque(int i)
 {
     this->ui->widgetRotoscope->setCalque(v_final_calques->at(i));
+    this->ui->widgetRotoscope->setDrawingCalques(*v_final_calques);
     if(background_showed){
        this->ui->widgetRotoscope->setBackground(v_path_backgrounds->at(i));
     }
@@ -290,13 +291,13 @@ void MainWindow::on_buttonNewFrame_clicked()
 
         showCalque(nb_frame-1);
 
-        //this->ui->widgetRotoscope->setBackground(v_path_backgrounds->at(nb_frame-1));
-
         this->ui->inputCurrentPicture->setText(QString::number(nb_frame));
         this->ui->labelMaxPicture->setText("/"+QString::number(nb_frame));
-          this->ui->widgetRotoscope->setCurrentCalqueNumber(this->ui->inputCurrentPicture->text().toInt());
-    } else {
-        this->ui->buttonNewFrame->setDisabled(true);
+          this->ui->widgetRotoscope->setCurrentCalqueNumber(nb_frame);
+
+        if (nb_frame == v_final_calques->size()) {
+            this->ui->buttonNewFrame->setDisabled(true);
+        }
     }
 
 }
@@ -412,7 +413,7 @@ void MainWindow::on_buttonPlay_clicked()
 
     ui->centralwidget->setDisabled(true);
 
-    int savedPosition = this->ui->inputCurrentPicture->text().toInt();
+    int savedPosition = this->ui->inputCurrentPicture->text().toInt() - 1;
     saveCalque(savedPosition);
     int lastNbOfCalqToDraw=this->ui->visibleDrawing->text().toInt();
     on_visibleDrawing_valueChanged(1);
