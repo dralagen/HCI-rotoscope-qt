@@ -78,9 +78,15 @@ private slots:
     void on_actionAboutQt_triggered();
 
 
+    void on_actionExport_to_Film_triggered();
+
 private:
     Ui::MainWindow *ui;
+
+    void exportPictures(QString dir);
+
     void deleteTmpPictures();
+    QString fileDialogOpen(bool directory);
     void showCalque(int i);
     void vPathBackgroundSort();
     void initVCalques();

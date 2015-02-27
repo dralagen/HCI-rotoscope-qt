@@ -643,7 +643,7 @@
      <property name="title">
       <string>Export</string>
      </property>
-     <addaction name="actionExport_Film"/>
+     <addaction name="actionExport_to_Film"/>
      <addaction name="actionExport_to_Pictures"/>
     </widget>
     <addaction name="actionNew_Project"/>
@@ -710,7 +710,7 @@
     <string>About</string>
    </property>
   </action>
-  <action name="actionExport_Film">
+  <action name="actionExport_to_Film">
    <property name="text">
     <string>Export to Film</string>
    </property>
@@ -738,7 +738,10 @@
   </action>
   <action name="actionAboutQt">
    <property name="text">
-    <string>AboutQt</string>
+    <string>About Qt</string>
+   </property>
+   <property name="toolTip">
+    <string>About Qt</string>
    </property>
   </action>
  </widget>

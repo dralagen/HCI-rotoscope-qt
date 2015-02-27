@@ -95,18 +95,16 @@ void MainWindow::extractPictures(QString movie, QString frequency){
     // nouveau projet  => suppression des images extraite d'un ancien projet
     deleteTmpPictures();
 
-   QString command="ffmpeg -i ";
+   QString command="ffmpeg -y -i ";
    QString fpsOption=" -r ";
    QString outputFormat = " -f image2 ";
    QString output ="%05d.png";
 
    QString extractCommand= command+"\""+movie+"\""+fpsOption+frequency+outputFormat+"\""+outputBasedir+output+"\"";
    qDebug() << extractCommand;
-   QByteArray ba = extractCommand.toLocal8Bit();
-   const char *c_extractC= ba.data();
 
    // extraction des images par le system
-   system(c_extractC);
+   system(extractCommand.toStdString().data());
 
    // récupération des nom d'images,
    // ATTENTION :les images sont pris dans le désordre
@@ -149,6 +147,25 @@ void MainWindow::deleteTmpPictures(){
     system(QString("rm -Rf "+outputBasedir).toStdString().data());
     //recréation du dossier d'image vide
     system(QString("mkdir "+outputBasedir).toStdString().data());
+}
+
+QString MainWindow::fileDialogOpen(bool directory)
+{
+    QFileDialog fileDialog;
+    fileDialog.setWindowTitle("Export Picture");
+    if (directory) {
+        fileDialog.setFileMode(QFileDialog::Directory);
+        fileDialog.setOption(QFileDialog::ShowDirsOnly, true);
+    }
+
+    fileDialog.setAcceptMode(QFileDialog::AcceptSave);
+
+    if (fileDialog.exec()) {
+        return fileDialog.selectedFiles().first();
+
+    }
+
+    return "";
 }
 
 void MainWindow::showCalque(int i)
@@ -312,27 +329,64 @@ void MainWindow::on_actionExport_to_Pictures_triggered()
 {   //affichage d'un endroit ou les sauvegarder.
     qDebug()<< "enregistrement";
 
-    QFileDialog fileDialog;
-    fileDialog.setWindowTitle("Export Picture");
-    fileDialog.setFileMode(QFileDialog::Directory);
-    fileDialog.setOption(QFileDialog::ShowDirsOnly, true);
+    QString exportBasedir = fileDialogOpen(true);
 
-    fileDialog.setAcceptMode(QFileDialog::AcceptSave);
+    if (!exportBasedir.isEmpty()) {
 
-    fileDialog.exec();
+        exportPictures(exportBasedir);
 
-    if (fileDialog.result() == QDialog::Accepted) {
-
-        QDir exportBasedir = fileDialog.directory();
-
-        for (int x = 0; x < v_final_calques->size(); ++x) {
-            v_final_calques->at(x).save(exportBasedir.absolutePath()+"/"+QString::number(x)+".png");
-        }
-
-        QMessageBox::information(this, "Export successfull", "All pictures has exported into " + exportBasedir.absolutePath());
+        QMessageBox::information(this, "Export successfull", "All pictures has exported into " + exportBasedir);
 
     }
 
+}
+
+void MainWindow::on_actionExport_to_Film_triggered()
+{
+    QString exportToFilm = fileDialogOpen(false);
+
+    if (!exportToFilm.isEmpty()) {
+
+        QDir exportBasedir(exportToFilm+".pictures");
+
+        exportPictures(exportBasedir.absolutePath());
+
+        QString cmd = "ffmpeg -y -r " + QString::number(freqVideo) + " -i \""
+                + exportBasedir.absolutePath() + "/%05d.png\" \"" + exportToFilm+"\"";
+
+        qDebug() << cmd;
+
+        system(cmd.toStdString().data());
+
+        // clean tmp file
+        cmd = "rm -rf \"" + exportBasedir.absolutePath() + "\"";
+        system(cmd.toStdString().data());
+
+        QMessageBox::information(this, "Export successfull", "Video has exported at " + exportBasedir.absolutePath());
+    }
+}
+
+void MainWindow::exportPictures(QString dir)
+{
+    QDir exportBasedir(dir);
+    exportBasedir.mkpath(dir);
+
+    for (int x = 0; x < v_final_calques->size(); ++x) {
+        QString imgStr;
+        if(x<10){
+             imgStr= "0000"+QString::number(x);
+        }else if(x<100){
+            imgStr= "000"+QString::number(x);
+        }else if(x<1000){
+             imgStr= "00"+QString::number(x);
+        }else if(x<10000){
+            imgStr= "0"+QString::number(x);
+        }else{
+             imgStr= ""+QString::number(x);
+        }
+
+        v_final_calques->at(x).save(exportBasedir.absolutePath()+"/"+imgStr+".png");
+    }
 }
 
 void MainWindow::on_actionAbout_triggered()
@@ -405,7 +459,7 @@ void MainWindow::on_buttonPlay_clicked()
     int savedPosition = currentCalque;
     saveCalque(savedPosition);
     int lastNbOfCalqToDraw=this->ui->visibleDrawing->text().toInt();
-    on_visibleDrawing_valueChanged(1);
+    on_visibleDrawing_valueChanged(0);
 
     for (int i = 0; i < nb_frame; ++i) {
         showCalque(i);
@@ -442,8 +496,9 @@ void MainWindow::saveCalque(int i){
 void MainWindow::disableMainAction(bool disable)
 {
     ui->menuExport->setDisabled(disable);
-    ui->actionSave->setDisabled(disable);
-    ui->actionSave_As->setDisabled(disable);
+    ui->actionOpen->setDisabled(true); // TODO impl Open project
+    ui->actionSave->setDisabled(true || disable); // TODO impl Save project
+    ui->actionSave_As->setDisabled(true || disable); // TODO impl Save project as
     ui->actionUndo->setDisabled(disable);
     ui->centralwidget->setDisabled(disable);
 }
