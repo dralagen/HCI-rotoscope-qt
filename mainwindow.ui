@@ -479,7 +479,7 @@
        </property>
        <property name="icon">
         <iconset>
-         <normaloff>../build-rotoscope-Desktop-Debug/icones/play.jpg</normaloff>../build-rotoscope-Desktop-Debug/icones/play.jpg</iconset>
+         <normaloff>icones/play.jpg</normaloff>icones/play.jpg</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -505,7 +505,7 @@
        </property>
        <property name="icon">
         <iconset>
-         <normaloff>../build-rotoscope-Desktop-Debug/icones/first.jpg</normaloff>../build-rotoscope-Desktop-Debug/icones/first.jpg</iconset>
+         <normaloff>icones/first.jpg</normaloff>icones/first.jpg</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -528,7 +528,7 @@
        </property>
        <property name="icon">
         <iconset>
-         <normaloff>../build-rotoscope-Desktop-Debug/icones/previous.jpg</normaloff>../build-rotoscope-Desktop-Debug/icones/previous.jpg</iconset>
+         <normaloff>icones/previous.jpg</normaloff>icones/previous.jpg</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -551,7 +551,7 @@
        </property>
        <property name="icon">
         <iconset>
-         <normaloff>../build-rotoscope-Desktop-Debug/icones/next.jpg</normaloff>../build-rotoscope-Desktop-Debug/icones/next.jpg</iconset>
+         <normaloff>icones/next.jpg</normaloff>icones/next.jpg</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -574,7 +574,7 @@
        </property>
        <property name="icon">
         <iconset>
-         <normaloff>../build-rotoscope-Desktop-Debug/icones/last.jpg</normaloff>../build-rotoscope-Desktop-Debug/icones/last.jpg</iconset>
+         <normaloff>icones/last.jpg</normaloff>icones/last.jpg</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -757,3 +757,4 @@
  <resources/>
  <connections/>
 </ui>
+
