@@ -212,7 +212,7 @@ void MainWindow::on_setColorButton_clicked()
 
     QColor c= cDiag.selectedColor();
 
-
+    v_color->removeAll(c);
 
     v_color->push_front(c);
     this->ui->widgetRotoscope->setPenColor(c);
