@@ -37,6 +37,7 @@ DrawingArea::DrawingArea(QWidget *parent) :
     v_calques.push_back(*calque);
 
     numberOfCalqueToDraw=0;
+    freqOfCalqueToDraw=1;
 
     currentCalqueNumber=0;
 
@@ -92,11 +93,11 @@ void DrawingArea::paintEvent(QPaintEvent *event){
     qDebug() << " v_lastcalqueToDraw.size() : " << v_lastcalqueToDraw.size();
     qDebug() << "-----------------------";
 
-    const int firstIndice = std::max((currentCalqueNumber - numberOfCalqueToDraw), 0);
+    const int firstIndice = std::max((currentCalqueNumber - numberOfCalqueToDraw*freqOfCalqueToDraw), 0);
 
-    for (int i = firstIndice; i < currentCalqueNumber; ++i) {
+    for (int i = currentCalqueNumber-freqOfCalqueToDraw; i >= firstIndice; i-=freqOfCalqueToDraw) {
 
-        widgetPainter.setOpacity((0.4 / (double)numberOfCalqueToDraw) * (double)(i-firstIndice) + 0.4);
+        widgetPainter.setOpacity((0.4 / (double)numberOfCalqueToDraw*freqOfCalqueToDraw) * (double)(i-firstIndice) + 0.4);
         widgetPainter.drawImage(0,0,v_lastcalqueToDraw.at(i));
 
     }
@@ -226,6 +227,17 @@ void DrawingArea::setDrawingCalques(QVector<QImage> v, int nb){
 
 void DrawingArea::setDrawingCalques(QVector<QImage> v){
     setDrawingCalques(v, numberOfCalqueToDraw);
+}
+
+void DrawingArea::setFreqDrawindCalques(int f)
+{
+    freqOfCalqueToDraw=std::max(f,1);
+    update();
+}
+
+int DrawingArea::getFreqDrawingCalques()
+{
+    return freqOfCalqueToDraw;
 }
 
 

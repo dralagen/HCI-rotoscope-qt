@@ -82,6 +82,8 @@ private slots:
 
     void on_actionExport_to_Film_triggered();
 
+    void on_freqDrawing_valueChanged(int value);
+
 private:
     Ui::MainWindow *ui;
 

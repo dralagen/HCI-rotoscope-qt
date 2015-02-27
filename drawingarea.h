@@ -22,6 +22,8 @@ public:
     QImage getLastCalque();
     void setDrawingCalques(QVector<QImage> v,int nb);
     void setDrawingCalques(QVector<QImage> v);
+    void setFreqDrawindCalques(int f);
+    int getFreqDrawingCalques();
     void setCurrentCalqueNumber(int nb);
 
     QSize sizeHint() const;
@@ -39,6 +41,7 @@ private:
       int             toolType;
       //nombre de n dernier calque a dessiner.
       int             numberOfCalqueToDraw;
+      int             freqOfCalqueToDraw;
       //numero du calque courant  a partir du quel on dessine les n derniers.
       int             currentCalqueNumber;
 

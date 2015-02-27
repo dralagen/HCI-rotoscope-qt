@@ -509,9 +509,15 @@ void MainWindow::on_colorButton6_clicked()
     }
 }
 
-void MainWindow::on_visibleDrawing_valueChanged(int arg1)
+void MainWindow::on_visibleDrawing_valueChanged(int value)
 {
-    if(arg1 <= v_final_calques->size()){
-        this->ui->widgetRotoscope->setDrawingCalques(* v_final_calques,arg1);
+    if(value <= v_final_calques->size()){
+        this->ui->widgetRotoscope->setDrawingCalques(* v_final_calques,value);
     }
+}
+
+void MainWindow::on_freqDrawing_valueChanged(int value)
+{
+    ui->widgetRotoscope->setFreqDrawindCalques(value);
+    ui->freqDrawing->setValue(ui->widgetRotoscope->getFreqDrawingCalques());
 }
