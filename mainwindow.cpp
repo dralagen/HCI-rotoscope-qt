@@ -33,6 +33,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->buttonPreviousPicture->setDisabled(true);
     ui->buttonLastPicture->setDisabled(true);
     ui->buttonNextPicture->setDisabled(true);
+
+    // add reference of colorButton in buttonsColor
+    buttonsColor.push_back(ui->colorButton1);
+    buttonsColor.push_back(ui->colorButton2);
+    buttonsColor.push_back(ui->colorButton3);
+    buttonsColor.push_back(ui->colorButton4);
+    buttonsColor.push_back(ui->colorButton5);
+    buttonsColor.push_back(ui->colorButton6);
 }
 
 MainWindow::~MainWindow()
@@ -196,73 +204,27 @@ void MainWindow::showCalque(int i)
 void MainWindow::on_setColorButton_clicked()
 {
     QColorDialog cDiag(this);
-    QColor c= cDiag.getColor();
+    cDiag.exec();
 
-    //historique des couleurs ( 6 couleurs )
-    switch (v_color->size()) {
-    case 1:
-        v_color->push_front(c);
-        this->ui->colorButton1->setStyleSheet(QString("background-color:%1").arg(v_color->at(0).name()));
-        this->ui->colorButton2->setStyleSheet(QString("background-color:%1").arg(v_color->at(1).name()));
-
-    break;
-    case 2:
-        v_color->push_front(c);
-        this->ui->colorButton1->setStyleSheet(QString("background-color:%1").arg(v_color->at(0).name()));
-        this->ui->colorButton2->setStyleSheet(QString("background-color:%1").arg(v_color->at(1).name()));
-        this->ui->colorButton3->setStyleSheet(QString("background-color:%1").arg(v_color->at(2).name()));
-
-    break;
-    case 3:
-        v_color->push_front(c);
-        this->ui->colorButton1->setStyleSheet(QString("background-color:%1").arg(v_color->at(0).name()));
-        this->ui->colorButton2->setStyleSheet(QString("background-color:%1").arg(v_color->at(1).name()));
-        this->ui->colorButton3->setStyleSheet(QString("background-color:%1").arg(v_color->at(2).name()));
-        this->ui->colorButton4->setStyleSheet(QString("background-color:%1").arg(v_color->at(3).name()));
-
-    break;
-
-    case 4:
-        v_color->push_front(c);
-
-        this->ui->colorButton1->setStyleSheet(QString("background-color:%1").arg(v_color->at(0).name()));
-        this->ui->colorButton2->setStyleSheet(QString("background-color:%1").arg(v_color->at(1).name()));
-        this->ui->colorButton3->setStyleSheet(QString("background-color:%1").arg(v_color->at(2).name()));
-        this->ui->colorButton4->setStyleSheet(QString("background-color:%1").arg(v_color->at(3).name()));
-        this->ui->colorButton5->setStyleSheet(QString("background-color:%1").arg(v_color->at(4).name()));
-    break;
-
-    case 5:
-        v_color->push_front(c);
-
-        this->ui->colorButton1->setStyleSheet(QString("background-color:%1").arg(v_color->at(0).name()));
-        this->ui->colorButton2->setStyleSheet(QString("background-color:%1").arg(v_color->at(1).name()));
-        this->ui->colorButton3->setStyleSheet(QString("background-color:%1").arg(v_color->at(2).name()));
-        this->ui->colorButton4->setStyleSheet(QString("background-color:%1").arg(v_color->at(3).name()));
-        this->ui->colorButton5->setStyleSheet(QString("background-color:%1").arg(v_color->at(4).name()));
-        this->ui->colorButton6->setStyleSheet(QString("background-color:%1").arg(v_color->at(5).name()));
-    break;
-
-    case 6:
-        v_color->removeLast();
-        v_color->push_front(c);
-        this->ui->colorButton1->setStyleSheet(QString("background-color:%1").arg(v_color->at(0).name()));
-        this->ui->colorButton2->setStyleSheet(QString("background-color:%1").arg(v_color->at(1).name()));
-        this->ui->colorButton3->setStyleSheet(QString("background-color:%1").arg(v_color->at(2).name()));
-        this->ui->colorButton4->setStyleSheet(QString("background-color:%1").arg(v_color->at(3).name()));
-        this->ui->colorButton5->setStyleSheet(QString("background-color:%1").arg(v_color->at(4).name()));
-        this->ui->colorButton6->setStyleSheet(QString("background-color:%1").arg(v_color->at(5).name()));
-    break;
-
-    default:
-        v_color->push_front(c);
-        this->ui->colorButton1->setStyleSheet(QString("background-color:%1").arg(v_color->at(0).name()));
-        break;
+    if (cDiag.result() != QDialog::Accepted) {
+        return ;
     }
 
+    QColor c= cDiag.selectedColor();
 
+
+
+    v_color->push_front(c);
     this->ui->widgetRotoscope->setPenColor(c);
 
+    if (v_color->size() > buttonsColor.size()) {
+        v_color->removeLast();
+    }
+
+    //historique des couleurs ( 6 couleurs )
+    for (int i = 0; i < v_color->size(); ++i) {
+        buttonsColor.at(i)->setStyleSheet(QString("background-color:%1").arg(v_color->at(i).name()));
+    }
 }
 
 void MainWindow::vPathBackgroundSort(){

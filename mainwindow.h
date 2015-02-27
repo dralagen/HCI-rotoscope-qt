@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+#include <QPushButton>
+
 namespace Ui {
 class MainWindow;
 }
@@ -92,6 +94,8 @@ private:
     void initVCalques();
     QString outputBasedir = "/tmp/rotoscope/";
     int freqVideo;
+
+    QVector<QPushButton *> buttonsColor;
 };
 
 
