@@ -30,6 +30,7 @@ void NewProject::on_toolButton_clicked()
     QFileDialog fileDialog;
     fileDialog.setWindowTitle("Open Video");
     fileDialog.setFileMode(QFileDialog::ExistingFile);
+    fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
     fileDialog.setNameFilter("AllVideo (*.3g2 *.3gp *.asf *.avi *.flv *.m4v *.mkv *.mov *.qt *.mp4 *.m4p *.mpg *.mp2 *.mpeg *.mpe *.mpv *.m2v *.ogv *.ogg *.webm *.wmv *.yuv);;"
                       "Cell Phone Video (*.3g2 *.3gp);;"
                       "AVI (*.avi);;"

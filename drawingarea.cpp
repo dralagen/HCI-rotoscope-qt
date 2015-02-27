@@ -17,7 +17,7 @@
 DrawingArea::DrawingArea(QWidget *parent) :
     QWidget(parent)
 {
-    penColor= Qt::black;
+    penColor= Qt::white;
     penSize = 0;
     ratio = 0.0;
     toolType=TOOL_NONE;
@@ -27,21 +27,18 @@ DrawingArea::DrawingArea(QWidget *parent) :
     calque->fill(0);
 
     background = new QImage(3, 3, QImage::Format_RGB32);
-    background->fill(Qt::white);
+    background->fill(Qt::gray);
     //ajustement a la fenêtre de l'image de fond
     background = new QImage(background->scaled(this->size()));
 
-    //image cache de l'image de fond caché
-    background_hided = new QImage(3, 3, QImage::Format_RGB32);
-    //ajustement a la fenêtre de l'image cache de fond
-    background_hided = new QImage(background->scaled(this->size()));
+    background_hided = false;
 
     //initialisation au calque vide.
     v_calques.push_back(*calque);
 
-    numberOfCalqueToDraw=1;
+    numberOfCalqueToDraw=0;
 
-    currentCalqueNumber=1;
+    currentCalqueNumber=0;
 
 }
 
@@ -78,7 +75,15 @@ void DrawingArea::paintEvent(QPaintEvent *event){
 
     // on dessine sur le widget pour voir l'état courant du dessin
     QPainter widgetPainter(this);
-    widgetPainter.drawImage(0,0,*background);
+
+    widgetPainter.fillRect(0,0, this->width(), this->height(), Qt::gray);
+
+    if (!background_hided) {
+        widgetPainter.drawImage(0,0,*background);
+    }
+    else {
+        widgetPainter.fillRect(0,0,background->width(), background->height(), Qt::black);
+    }
 
 
     qDebug() << "-----------------------";
@@ -89,7 +94,7 @@ void DrawingArea::paintEvent(QPaintEvent *event){
 
     const int firstIndice = std::max((currentCalqueNumber - numberOfCalqueToDraw), 0);
 
-    for (int i = firstIndice; i < currentCalqueNumber-1; ++i) {
+    for (int i = firstIndice; i < currentCalqueNumber; ++i) {
 
         widgetPainter.setOpacity((0.4 / (double)numberOfCalqueToDraw) * (double)(i-firstIndice) + 0.4);
         widgetPainter.drawImage(0,0,v_lastcalqueToDraw.at(i));
@@ -140,7 +145,6 @@ void DrawingArea::resizeEvent(QResizeEvent *event){
     background = new QImage(background->scaled(newSize));
     calque = new QImage(calque->scaled(newSize));
 
-
     updateGeometry();
 
 }
@@ -149,7 +153,11 @@ QSize DrawingArea::sizeHint() const {
     QSize s = size();
 
     if (ratio != 0.0) {
-        s.setHeight(ratio * s.width());
+        if (s.height() < ratio * s.width()) {
+            s.setWidth(1/ratio * s.height());
+        } else {
+            s.setHeight(ratio * s.width());
+        }
     }
 
     return s;
@@ -194,20 +202,7 @@ void DrawingArea::setBackground(QString path){
 }
 
 void DrawingArea::hideBackground(bool hide){
-
-    if(hide){
-        background = new QImage(*background_hided);
-        background = new QImage(background->scaled(sizeHint()));
-
-    }
-    else
-    {
-        background_hided = new QImage(*background);
-        background= new QImage(3, 3, QImage::Format_RGB32);
-        background->fill(Qt::white);
-        background= new QImage(background->scaled(sizeHint()));
-
-    }
+    background_hided = hide;
      update();
 }
 

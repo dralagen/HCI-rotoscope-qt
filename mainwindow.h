@@ -14,7 +14,7 @@ class MainWindow : public QMainWindow
 public:
     QVector<QColor>  * v_color;
     QVector<QString> * v_path_backgrounds;
-    int                current_background;
+    int                currentCalque;
     QVector<QImage>  * v_final_calques;
     int                nb_frame;
     bool               background_showed;
@@ -23,6 +23,7 @@ public:
     void extractPictures(QString movie, QString freq);
     void saveCalque(int i);
     void disableMainAction(bool disable);
+    QSize sizeHint() const;
     ~MainWindow();
 
 private slots:
@@ -71,6 +72,11 @@ private slots:
     void on_buttonPlay_clicked();
 
     void on_visibleDrawing_valueChanged(int arg1);
+
+    void on_actionAbout_triggered();
+
+    void on_actionAboutQt_triggered();
+
 
 private:
     Ui::MainWindow *ui;

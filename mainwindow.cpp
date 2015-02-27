@@ -5,6 +5,8 @@
 #include <iostream>
 #include <QDebug>
 #include <QColorDialog>
+#include <QFileDialog>
+#include <QMessageBox>
 #include <dirent.h>
 #include <unistd.h>
 
@@ -20,9 +22,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     v_color = new QVector<QColor>();
     v_path_backgrounds = new QVector<QString>();
-    current_background= 0;
+    currentCalque= -1;
     v_final_calques= new QVector<QImage>();
-    nb_frame=1;
+    nb_frame=0;
     setWindowTitle("Rotoscope Project");
     background_showed = true;
 
@@ -58,9 +60,6 @@ void MainWindow::on_actionNew_Project_triggered()
 
         ui->widgetRotoscope->resize(s);
         ui->widgetRotoscope->setRatio((double) s.height() / (double) s.width());
-
-        resize(std::max(ui->widgetRotoscope->width(), ui->widgetTools->width()) + ui->widgetNav->width() + 15,
-               std::max(ui->widgetRotoscope->height(), ui->widgetNav->height()) + ui->widgetTools->height() + 10);
 
         disableMainAction(false);
         ui->buttonNewFrame->setDisabled(false);
@@ -135,12 +134,13 @@ void MainWindow::extractPictures(QString movie, QString frequency){
    //on initialise le vecteur de calque avec des calques vides
     initVCalques();
 
-   //on charge la 1ière images sur drawingArea en la cherchant
-   this->ui->widgetRotoscope->setBackground(v_path_backgrounds->at(current_background));
+    currentCalque = 0;
+    nb_frame = 1;
 
-    //incrémentation du nombre de calque pour la première image charger
-    this->ui->inputCurrentPicture->setText(QString::number(1));
-    this->ui->labelMaxPicture->setText("/"+QString::number(1));
+    ui->labelMaxPicture->setText("/1");
+
+    showCalque(0);
+
 }
 
 void MainWindow::deleteTmpPictures(){
@@ -153,27 +153,26 @@ void MainWindow::deleteTmpPictures(){
 
 void MainWindow::showCalque(int i)
 {
-    this->ui->widgetRotoscope->setCalque(v_final_calques->at(i));
+    // save current
+    saveCalque(currentCalque);
+
+    currentCalque = i;
+
+    this->ui->inputCurrentPicture->setText(QString::number(currentCalque+1));
+
+    this->ui->widgetRotoscope->setCurrentCalqueNumber(currentCalque);
+
+    this->ui->widgetRotoscope->setCalque(v_final_calques->at(currentCalque));
     this->ui->widgetRotoscope->setDrawingCalques(*v_final_calques);
-    if(background_showed){
-       this->ui->widgetRotoscope->setBackground(v_path_backgrounds->at(i));
-    }
+    this->ui->widgetRotoscope->setBackground(v_path_backgrounds->at(currentCalque));
 
-    if (i > 0) {
-        this->ui->buttonFirstPicture->setDisabled(false);
-        this->ui->buttonPreviousPicture->setDisabled(false);
-    } else {
-        this->ui->buttonFirstPicture->setDisabled(true);
-        this->ui->buttonPreviousPicture->setDisabled(true);
-    }
+    bool disabled = (currentCalque < 1);
+    this->ui->buttonFirstPicture->setDisabled(disabled);
+    this->ui->buttonPreviousPicture->setDisabled(disabled);
 
-    if (i < nb_frame-1) {
-        this->ui->buttonLastPicture->setDisabled(false);
-        this->ui->buttonNextPicture->setDisabled(false);
-    } else {
-        this->ui->buttonLastPicture->setDisabled(true);
-        this->ui->buttonNextPicture->setDisabled(true);
-    }
+    disabled = (currentCalque >= nb_frame-1);
+    this->ui->buttonLastPicture->setDisabled(disabled);
+    this->ui->buttonNextPicture->setDisabled(disabled);
 }
 
 
@@ -283,7 +282,8 @@ void MainWindow::vPathBackgroundSort(){
 
 void MainWindow::on_buttonShowBackground_toggled(bool checked)
 {
-   this->ui->widgetRotoscope->hideBackground(checked);
+   this->ui->widgetRotoscope->hideBackground(!checked);
+    ui->buttonShowBackground->setChecked(checked);
     background_showed=checked;
 }
 
@@ -292,49 +292,70 @@ void MainWindow::on_buttonNewFrame_clicked()
     if(nb_frame<v_final_calques->size()){
         nb_frame++;
 
-
-        //récupération de la dernière version du calques dessiner par l'utilisateur.
-        //voir pour le dernier.
-        int imageI= this->ui->inputCurrentPicture->text().toInt();
         qDebug() << " newFrame ";
-        saveCalque(imageI-1);
 
         showCalque(nb_frame-1);
 
-        this->ui->inputCurrentPicture->setText(QString::number(nb_frame));
         this->ui->labelMaxPicture->setText("/"+QString::number(nb_frame));
-          this->ui->widgetRotoscope->setCurrentCalqueNumber(nb_frame);
+
+        on_buttonShowBackground_toggled(true);
 
         if (nb_frame == v_final_calques->size()) {
             this->ui->buttonNewFrame->setDisabled(true);
         }
+
     }
 
 }
 
 void MainWindow::on_actionExport_to_Pictures_triggered()
 {   //affichage d'un endroit ou les sauvegarder.
-        qDebug()<< "enregistrement";
-    for (int x = 0; x < v_final_calques->size(); ++x) {
-        v_final_calques->at(x).save("calque"+QString::number(x)+".png");
+    qDebug()<< "enregistrement";
+
+    QFileDialog fileDialog;
+    fileDialog.setWindowTitle("Export Picture");
+    fileDialog.setFileMode(QFileDialog::Directory);
+    fileDialog.setOption(QFileDialog::ShowDirsOnly, true);
+
+    fileDialog.setAcceptMode(QFileDialog::AcceptSave);
+
+    fileDialog.exec();
+
+    if (fileDialog.result() == QDialog::Accepted) {
+
+        QDir exportBasedir = fileDialog.directory();
+
+        for (int x = 0; x < v_final_calques->size(); ++x) {
+            v_final_calques->at(x).save(exportBasedir.absolutePath()+"/"+QString::number(x)+".png");
+        }
+
+        QMessageBox::information(this, "Export successfull", "All pictures has exported into " + exportBasedir.absolutePath());
+
     }
 
+}
+
+void MainWindow::on_actionAbout_triggered()
+{
+    QMessageBox::about(this, "Rotoscope", "Authors : Garandel Adrien and Perrai David \n"
+                                          "License : GNU GPL");
+}
+
+void MainWindow::on_actionAboutQt_triggered()
+{
+    QMessageBox::aboutQt(this, "Rotoscope");
 }
 
 
 void MainWindow::on_inputCurrentPicture_editingFinished()
 {
-   if(this->ui->inputCurrentPicture->text().toInt() > 0){
-        current_background = this->ui->inputCurrentPicture->text().toInt();
+    int newPicture = ui->inputCurrentPicture->text().toInt();
+    if(newPicture >= 0 && newPicture < nb_frame){
 
-        // un calque par background donc l'index i pour calque = index i pour background
-       if(current_background -1 < nb_frame){
+        // on retrouve la dernière version du calque correspondant à l'image.
+        qDebug()<< "set du calque et du background : " + QString::number(currentCalque);
+        showCalque(newPicture);
 
-           // on retrouve la dernière version du calque correspondant à l'image.
-           qDebug()<< "set du calque et du background : " + QString::number(current_background-1);
-            showCalque(current_background-1);
-
-      }
    }
 
 }
@@ -344,42 +365,20 @@ void MainWindow::on_inputCurrentPicture_editingFinished()
 
 void MainWindow::on_buttonNextPicture_clicked()
 {
-
-    if(this->ui->inputCurrentPicture->text().toInt()+1 <= nb_frame)
+    if(currentCalque < nb_frame)
     {
-
-
-        current_background=this->ui->inputCurrentPicture->text().toInt();
-
-        //mise a jour de l'état du calque avant de passer a l'image suivante
-
         qDebug() << "next Picture";
-        saveCalque(current_background-1);
-
-        this->ui->inputCurrentPicture->setText(QString::number(current_background+1));
-
-        showCalque(current_background);
-        this->ui->widgetRotoscope->setCurrentCalqueNumber(this->ui->inputCurrentPicture->text().toInt());
-
+        showCalque(currentCalque+1);
     }
 
 }
 
 void MainWindow::on_buttonPreviousPicture_clicked()
 {
-    if(this->ui->inputCurrentPicture->text().toInt() > 1){
-
-        current_background= this->ui->inputCurrentPicture->text().toInt();
-        //mise a jour de l'état du calque avant de passer a l'image précédente
+    if(currentCalque > 0){
 
         qDebug() << "previous picture";
-        saveCalque(current_background-1);
-
-        //maj inteface
-        this->ui->inputCurrentPicture->setText(QString::number(current_background-1));
-
-        showCalque(current_background-2);
-        this->ui->widgetRotoscope->setCurrentCalqueNumber(this->ui->inputCurrentPicture->text().toInt());
+        showCalque(currentCalque-1);
     }
 
 
@@ -387,34 +386,14 @@ void MainWindow::on_buttonPreviousPicture_clicked()
 
 void MainWindow::on_buttonLastPicture_clicked()
 {
-
-    current_background=this->ui->inputCurrentPicture->text().toInt();
-
-    saveCalque(current_background-1);
-
     showCalque(nb_frame-1);
-
-    //maj de l'interface
-    this->ui->inputCurrentPicture->setText(QString::number(nb_frame));
-    this->ui->widgetRotoscope->setCurrentCalqueNumber(this->ui->inputCurrentPicture->text().toInt());
 }
 
 
 
 void MainWindow::on_buttonFirstPicture_clicked()
 {
-    //mise a jour de l'état du calque avant de passer a la dernière image
-
-    current_background=this->ui->inputCurrentPicture->text().toInt();
-
-    saveCalque(current_background-1);
-
     showCalque(0);
-
-    //maj de l'interface
-    this->ui->inputCurrentPicture->setText(QString::number(1));
-    this->ui->widgetRotoscope->setCurrentCalqueNumber(this->ui->inputCurrentPicture->text().toInt());
-
 }
 
 // TODO an action for stop annimation
@@ -423,7 +402,7 @@ void MainWindow::on_buttonPlay_clicked()
 
     ui->centralwidget->setDisabled(true);
 
-    int savedPosition = this->ui->inputCurrentPicture->text().toInt() - 1;
+    int savedPosition = currentCalque;
     saveCalque(savedPosition);
     int lastNbOfCalqToDraw=this->ui->visibleDrawing->text().toInt();
     on_visibleDrawing_valueChanged(1);
@@ -467,6 +446,12 @@ void MainWindow::disableMainAction(bool disable)
     ui->actionSave_As->setDisabled(disable);
     ui->actionUndo->setDisabled(disable);
     ui->centralwidget->setDisabled(disable);
+}
+
+QSize MainWindow::sizeHint() const
+{
+    return QSize(std::max(ui->widgetRotoscope->width(), ui->widgetTools->width()) + ui->widgetNav->width() + 15,
+                 std::max(ui->widgetRotoscope->height(), ui->widgetNav->height()) + ui->widgetTools->height() + 10);
 }
 
 

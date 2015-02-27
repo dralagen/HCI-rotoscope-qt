@@ -31,7 +31,7 @@ private:
       QVector<QImage> v_calques;
       QVector<QImage> v_lastcalqueToDraw;
       QImage *        background;
-      QImage *        background_hided;
+      bool            background_hided;
       QPoint          fPoint;
       QPoint          sPoint;
       QColor          penColor;
