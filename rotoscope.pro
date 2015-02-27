@@ -23,6 +23,9 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui \
             newproject.ui
 
+style.path  = "$${OUT_PWD}"
+style.files = GBstyle.qss
+
 images.path    = "$${OUT_PWD}/icones"
 images.files   += icones/first.jpg
 images.files   += icones/gome.png
@@ -32,4 +35,4 @@ images.files   += icones/pinceau.png
 images.files   += icones/play.jpg
 images.files   += icones/previous.jpg
 
-INSTALLS += images
+INSTALLS += images style
