@@ -36,7 +36,6 @@ DrawingArea::DrawingArea(QWidget *parent) :
     freqOfCalqueToDraw=1;
 
     currentCalqueNumber=0;
-
 }
 
 DrawingArea::~DrawingArea(){
@@ -125,6 +124,7 @@ void DrawingArea::mouseReleaseEvent(QMouseEvent * ){
 
     v_calques.push_back(QImage(*calque));
 
+    emit undoDisabled(false);
 }
 
 void DrawingArea::undo(){
@@ -133,6 +133,10 @@ void DrawingArea::undo(){
         v_calques.removeLast();
         *calque = QImage(v_calques.last());
         update();
+    }
+
+    if (v_calques.size() <= 1) {
+        emit undoDisabled(true);
     }
 }
 
@@ -157,6 +161,8 @@ void DrawingArea::setCalque(QImage *newCalque){
         v_calques.clear(); // clean history
         calque = newCalque;
         v_calques.push_back(*calque);
+
+        emit undoDisabled(true);
 
         update();
     }

@@ -44,6 +44,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->widgetRotoscope->setDrawingCalques(&v_final_calques);
 
+    connect(ui->widgetRotoscope, SIGNAL(undoDisabled(bool)), this, SLOT(actionUndo_setDisabled(bool)));
 }
 
 MainWindow::~MainWindow()
@@ -115,6 +116,11 @@ void MainWindow::on_actionNew_Project_triggered()
 void MainWindow::on_actionUndo_triggered()
 {
     this->ui->widgetRotoscope->undo();
+}
+
+void MainWindow::actionUndo_setDisabled(bool b)
+{
+    ui->actionUndo->setDisabled(b);
 }
 
 void MainWindow::on_sizeBox_valueChanged(int arg1)

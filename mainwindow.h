@@ -20,6 +20,8 @@ public:
     void disableMainAction(bool disable);
     ~MainWindow();
 
+public slots:
+    void actionUndo_setDisabled(bool b);
 protected:
     void resizeEvent(QResizeEvent *event);
     void paintEvent(QPaintEvent *);

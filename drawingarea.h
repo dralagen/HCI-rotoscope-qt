@@ -50,6 +50,7 @@ protected:
       void mouseReleaseEvent(QMouseEvent *event);
 
 signals:
+      void undoDisabled(bool);
 
 public slots:
 
