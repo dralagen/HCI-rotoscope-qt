@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     v_color = new QVector<QColor>();
     v_path_backgrounds = new QVector<QString>();
     currentCalque= -1;
-    nb_frame=0;
+
     setWindowTitle("Rotoscope Project");
     background_showed = true;
 
@@ -109,7 +109,6 @@ void MainWindow::on_actionNew_Project_triggered()
         setSizePolicy(qsp);
 
         disableMainAction(false);
-        ui->buttonNewFrame->setDisabled(false);
     }
 }
 
@@ -187,9 +186,8 @@ void MainWindow::extractPictures(QString movie, QString frequency){
     initVCalques();
 
     currentCalque = 0;
-    nb_frame = 1;
 
-    ui->labelMaxPicture->setText("/1");
+    ui->labelMaxPicture->setText("/"+QString::number(v_final_calques.size()));
 
     showCalque(0);
 
@@ -237,7 +235,7 @@ void MainWindow::showCalque(int i)
     this->ui->buttonFirstPicture->setDisabled(disabled);
     this->ui->buttonPreviousPicture->setDisabled(disabled);
 
-    disabled = (currentCalque >= nb_frame-1);
+    disabled = (currentCalque >= v_final_calques.size()-1);
     this->ui->buttonLastPicture->setDisabled(disabled);
     this->ui->buttonNextPicture->setDisabled(disabled);
 }
@@ -307,27 +305,6 @@ void MainWindow::on_buttonShowBackground_toggled(bool checked)
    this->ui->widgetRotoscope->hideBackground(!checked);
     ui->buttonShowBackground->setChecked(checked);
     background_showed=checked;
-}
-
-void MainWindow::on_buttonNewFrame_clicked()
-{
-    if(nb_frame<v_final_calques.size()){
-        nb_frame++;
-
-        qDebug() << " newFrame ";
-
-        showCalque(nb_frame-1);
-
-        this->ui->labelMaxPicture->setText("/"+QString::number(nb_frame));
-
-        on_buttonShowBackground_toggled(true);
-
-        if (nb_frame == v_final_calques.size()) {
-            this->ui->buttonNewFrame->setDisabled(true);
-        }
-
-    }
-
 }
 
 void MainWindow::on_actionExport_to_Pictures_triggered()
@@ -409,7 +386,7 @@ void MainWindow::on_actionAboutQt_triggered()
 void MainWindow::on_inputCurrentPicture_editingFinished()
 {
     int newPicture = ui->inputCurrentPicture->text().toInt();
-    if(newPicture >= 0 && newPicture < nb_frame){
+    if(newPicture >= 0 && newPicture < v_final_calques.size()){
 
         // on retrouve la dernière version du calque correspondant à l'image.
         qDebug()<< "set du calque et du background : " + QString::number(currentCalque);
@@ -424,7 +401,7 @@ void MainWindow::on_inputCurrentPicture_editingFinished()
 
 void MainWindow::on_buttonNextPicture_clicked()
 {
-    if(currentCalque < nb_frame)
+    if(currentCalque < v_final_calques.size())
     {
         qDebug() << "next Picture";
         showCalque(currentCalque+1);
@@ -445,7 +422,7 @@ void MainWindow::on_buttonPreviousPicture_clicked()
 
 void MainWindow::on_buttonLastPicture_clicked()
 {
-    showCalque(nb_frame-1);
+    showCalque(v_final_calques.size()-1);
 }
 
 
@@ -465,7 +442,7 @@ void MainWindow::on_buttonPlay_clicked()
     int lastNbOfCalqToDraw=this->ui->visibleDrawing->text().toInt();
     on_visibleDrawing_valueChanged(0);
 
-    for (int i = 0; i < nb_frame; ++i) {
+    for (int i = 0; i < v_final_calques.size(); ++i) {
         showCalque(i);
         this->ui->widgetRotoscope->repaint();
         usleep(1000000/freqVideo); // 42000 => 24 fps

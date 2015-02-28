@@ -43,8 +43,6 @@ private slots:
 
     void on_buttonShowBackground_toggled(bool checked);
 
-    void on_buttonNewFrame_clicked();
-
     void on_actionExport_to_Pictures_triggered();
 
     void on_buttonNextPicture_clicked();
@@ -97,7 +95,6 @@ private:
     QVector<QString> * v_path_backgrounds;
     int                currentCalque;
     QVector<QImage *>  v_final_calques;
-    int                nb_frame;
     bool               background_showed;
 
     QString outputBasedir = "/tmp/rotoscope/";
