@@ -48,7 +48,7 @@ DrawingArea::~DrawingArea(){
 
 }
 
-void DrawingArea::paintEvent(QPaintEvent *event){
+void DrawingArea::paintEvent(QPaintEvent *){
 
     setAttribute(Qt::WA_OpaquePaintEvent);
     QPainter c_painter(calque);
@@ -118,8 +118,7 @@ void DrawingArea::mousePressEvent(QMouseEvent* event){
 }
 
 //au clique relevé
-void DrawingArea::mouseReleaseEvent(QMouseEvent * event){
-
+void DrawingArea::mouseReleaseEvent(QMouseEvent * ){
 
      //reset des positions du curseur enregistrer pour éviter de repartir du dernier point.
     fPoint.setX(0);
