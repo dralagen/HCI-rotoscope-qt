@@ -14,19 +14,15 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    QVector<QColor>  * v_color;
-    QVector<QString> * v_path_backgrounds;
-    int                currentCalque;
-    QVector<QImage>  * v_final_calques;
-    int                nb_frame;
-    bool               background_showed;
-
     explicit MainWindow(QWidget *parent = 0);
     void extractPictures(QString movie, QString freq);
     void saveCalque(int i);
     void disableMainAction(bool disable);
-    QSize sizeHint() const;
     ~MainWindow();
+
+protected:
+    void resizeEvent(QResizeEvent *event);
+    void paintEvent(QPaintEvent *);
 
 private slots:
     void on_actionExit_triggered();
@@ -94,10 +90,21 @@ private:
     void showCalque(int i);
     void vPathBackgroundSort();
     void initVCalques();
+
+    QVector<QColor>  * v_color;
+    QVector<QString> * v_path_backgrounds;
+    int                currentCalque;
+    QVector<QImage *>  v_final_calques;
+    int                nb_frame;
+    bool               background_showed;
+
     QString outputBasedir = "/tmp/rotoscope/";
     int freqVideo;
 
     QVector<QPushButton *> buttonsColor;
+
+    bool resized;
+
 };
 
 

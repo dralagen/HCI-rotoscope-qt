@@ -7,6 +7,7 @@
 #include <QColorDialog>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QEvent>
 #include <dirent.h>
 #include <unistd.h>
 
@@ -23,7 +24,6 @@ MainWindow::MainWindow(QWidget *parent) :
     v_color = new QVector<QColor>();
     v_path_backgrounds = new QVector<QString>();
     currentCalque= -1;
-    v_final_calques= new QVector<QImage>();
     nb_frame=0;
     setWindowTitle("Rotoscope Project");
     background_showed = true;
@@ -41,11 +41,42 @@ MainWindow::MainWindow(QWidget *parent) :
     buttonsColor.push_back(ui->colorButton4);
     buttonsColor.push_back(ui->colorButton5);
     buttonsColor.push_back(ui->colorButton6);
+
+    ui->widgetRotoscope->setDrawingCalques(&v_final_calques);
+
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::resizeEvent(QResizeEvent *)
+{
+    resized = true;
+}
+
+void MainWindow::paintEvent(QPaintEvent *)
+{
+    if (resized) {
+        resized = false;
+
+        if (v_final_calques.empty()) {
+            return ;
+        }
+
+        ui->widgetRotoscope->setBackground(v_path_backgrounds->at(currentCalque));
+
+        QSize bgSize = ui->widgetRotoscope->getBackgroundSize();
+
+        for (int i = 0; i < v_final_calques.size(); ++i) {
+            QImage *tmp = v_final_calques.at(i);
+            v_final_calques.replace(i, new QImage(tmp->scaled(bgSize)));
+            delete tmp;
+        }
+
+        ui->widgetRotoscope->setCalque(v_final_calques.at(currentCalque));
+    }
 }
 
 void MainWindow::on_actionExit_triggered()
@@ -66,8 +97,15 @@ void MainWindow::on_actionNew_Project_triggered()
 
         QSize s(tmp.size());
 
-        ui->widgetRotoscope->resize(s);
-        ui->widgetRotoscope->setRatio((double) s.height() / (double) s.width());
+        QSize sHint(s.width() + ui->widgetTools->width(),
+                    s.height() + ui->widgetNav->height() + ui->menubar->height() + 25);
+
+        resize(sHint);
+        update();
+
+        QSizePolicy qsp(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+        qsp.setHeightForWidth(true);
+        setSizePolicy(qsp);
 
         disableMainAction(false);
         ui->buttonNewFrame->setDisabled(false);
@@ -122,6 +160,8 @@ void MainWindow::extractPictures(QString movie, QString frequency){
    if (rep != NULL)
    {
        struct dirent * ent;
+
+       v_path_backgrounds->clear();
 
        while ((ent = readdir(rep)) != NULL)
        {
@@ -178,17 +218,13 @@ QString MainWindow::fileDialogOpen(bool directory)
 
 void MainWindow::showCalque(int i)
 {
-    // save current
-    saveCalque(currentCalque);
-
     currentCalque = i;
 
     this->ui->inputCurrentPicture->setText(QString::number(currentCalque+1));
 
     this->ui->widgetRotoscope->setCurrentCalqueNumber(currentCalque);
 
-    this->ui->widgetRotoscope->setCalque(v_final_calques->at(currentCalque));
-    this->ui->widgetRotoscope->setDrawingCalques(*v_final_calques);
+    this->ui->widgetRotoscope->setCalque(v_final_calques.at(currentCalque));
     this->ui->widgetRotoscope->setBackground(v_path_backgrounds->at(currentCalque));
 
     bool disabled = (currentCalque < 1);
@@ -255,6 +291,7 @@ void MainWindow::vPathBackgroundSort(){
         }
         img++;
     }
+    delete v_path_backgrounds;
     v_path_backgrounds=vTmp;
 
 }
@@ -268,7 +305,7 @@ void MainWindow::on_buttonShowBackground_toggled(bool checked)
 
 void MainWindow::on_buttonNewFrame_clicked()
 {
-    if(nb_frame<v_final_calques->size()){
+    if(nb_frame<v_final_calques.size()){
         nb_frame++;
 
         qDebug() << " newFrame ";
@@ -279,7 +316,7 @@ void MainWindow::on_buttonNewFrame_clicked()
 
         on_buttonShowBackground_toggled(true);
 
-        if (nb_frame == v_final_calques->size()) {
+        if (nb_frame == v_final_calques.size()) {
             this->ui->buttonNewFrame->setDisabled(true);
         }
 
@@ -333,7 +370,7 @@ void MainWindow::exportPictures(QString dir)
     QDir exportBasedir(dir);
     exportBasedir.mkpath(dir);
 
-    for (int x = 0; x < v_final_calques->size(); ++x) {
+    for (int x = 0; x < v_final_calques.size(); ++x) {
         QString imgStr;
         if(x<10){
              imgStr= "0000"+QString::number(x);
@@ -347,7 +384,7 @@ void MainWindow::exportPictures(QString dir)
              imgStr= ""+QString::number(x);
         }
 
-        v_final_calques->at(x).save(exportBasedir.absolutePath()+"/"+imgStr+".png");
+        v_final_calques.at(x)->save(exportBasedir.absolutePath()+"/"+imgStr+".png");
     }
 }
 
@@ -419,7 +456,6 @@ void MainWindow::on_buttonPlay_clicked()
     ui->centralwidget->setDisabled(true);
 
     int savedPosition = currentCalque;
-    saveCalque(savedPosition);
     int lastNbOfCalqToDraw=this->ui->visibleDrawing->text().toInt();
     on_visibleDrawing_valueChanged(0);
 
@@ -437,22 +473,13 @@ void MainWindow::on_buttonPlay_clicked()
 
 void MainWindow::initVCalques(){
 
+    v_final_calques.clear();
+
     for (int x = 0; x < v_path_backgrounds->size(); ++x) {
-        QImage * imgTmp = new QImage(3,3,QImage::Format_ARGB32_Premultiplied);
+        QImage * imgTmp = new QImage(ui->widgetRotoscope->size(),QImage::Format_ARGB32_Premultiplied);
         imgTmp->fill(0);
-        imgTmp = new QImage(imgTmp->scaled(this->ui->widgetRotoscope->size()));
-        v_final_calques->push_back(* imgTmp);
+        v_final_calques.push_back(imgTmp);
     }
-
-}
-
-// méthode pour l'enregistrement de l'état d'un calque.
-
-void MainWindow::saveCalque(int i){
-
-    v_final_calques->replace(i,this->ui->widgetRotoscope->getLastCalque());
-
-
 }
 
 void MainWindow::disableMainAction(bool disable)
@@ -464,13 +491,6 @@ void MainWindow::disableMainAction(bool disable)
     ui->actionUndo->setDisabled(disable);
     ui->centralwidget->setDisabled(disable);
 }
-
-QSize MainWindow::sizeHint() const
-{
-    return QSize(std::max(ui->widgetRotoscope->width(), ui->widgetTools->width()) + ui->widgetNav->width() + 15,
-                 std::max(ui->widgetRotoscope->height(), ui->widgetNav->height()) + ui->widgetTools->height() + 10);
-}
-
 
 void MainWindow::on_colorButton1_clicked()
 {   if(!v_color->isEmpty()){
@@ -511,8 +531,9 @@ void MainWindow::on_colorButton6_clicked()
 
 void MainWindow::on_visibleDrawing_valueChanged(int value)
 {
-    if(value <= v_final_calques->size()){
-        this->ui->widgetRotoscope->setDrawingCalques(* v_final_calques,value);
+    if(value <= v_final_calques.size()){
+        ui->widgetRotoscope->setNumberOfCalqueToDraw(value);
+        ui->widgetRotoscope->update();
     }
 }
 

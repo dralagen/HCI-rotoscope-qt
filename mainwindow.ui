@@ -58,6 +58,12 @@
      <layout class="QGridLayout" name="gridLayout">
       <item row="1" column="1">
        <widget class="QWidget" name="widgetTools" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimumSize">
          <size>
           <width>250</width>
@@ -453,6 +459,12 @@
     </item>
     <item row="1" column="0">
      <widget class="QWidget" name="widgetNav" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="minimumSize">
        <size>
         <width>510</width>
@@ -757,4 +769,3 @@
  <resources/>
  <connections/>
 </ui>
-

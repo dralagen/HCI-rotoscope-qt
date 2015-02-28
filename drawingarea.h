@@ -16,22 +16,21 @@ public:
     void setTooltype(int tool);
     void setPenColor(QColor c);
     void setBackground(QString path);
-    void setCalque(QImage newCalque);
+    QSize getBackgroundSize();
+    void setCalque(QImage *newCalque);
     void setRatio(double r);
     void hideBackground(bool hide);
     QImage getLastCalque();
-    void setDrawingCalques(QVector<QImage> v,int nb);
-    void setDrawingCalques(QVector<QImage> v);
+    void setDrawingCalques(QVector<QImage *> *v);
+    void setNumberOfCalqueToDraw(int nb);
     void setFreqDrawindCalques(int f);
     int getFreqDrawingCalques();
     void setCurrentCalqueNumber(int nb);
 
-    QSize sizeHint() const;
-
 private:
       QImage *        calque;
-      QVector<QImage> v_calques;
-      QVector<QImage> v_lastcalqueToDraw;
+      QVector<QImage *> v_calques;
+      QVector<QImage *> * v_lastcalqueToDraw;
       QImage *        background;
       bool            background_hided;
       QPoint          fPoint;
@@ -45,14 +44,11 @@ private:
       //numero du calque courant  a partir du quel on dessine les n derniers.
       int             currentCalqueNumber;
 
-      double ratio;
-
 protected:
       void paintEvent(QPaintEvent *event);
       void mouseMoveEvent(QMouseEvent *event);
       void mousePressEvent(QMouseEvent* event);
       void mouseReleaseEvent(QMouseEvent *event);
-      void resizeEvent(QResizeEvent *event);
 
 signals:
 

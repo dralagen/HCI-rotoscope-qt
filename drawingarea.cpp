@@ -19,7 +19,6 @@ DrawingArea::DrawingArea(QWidget *parent) :
 {
     penColor= Qt::white;
     penSize = 0;
-    ratio = 0.0;
     toolType=TOOL_NONE;
 
     calque = new QImage(this->width(),this->height(),QImage::Format_ARGB32_Premultiplied);
@@ -34,7 +33,7 @@ DrawingArea::DrawingArea(QWidget *parent) :
     background_hided = false;
 
     //initialisation au calque vide.
-    v_calques.push_back(*calque);
+    v_calques.push_back(calque);
 
     numberOfCalqueToDraw=0;
     freqOfCalqueToDraw=1;
@@ -87,24 +86,16 @@ void DrawingArea::paintEvent(QPaintEvent *event){
     }
 
 
-    qDebug() << "-----------------------";
-    qDebug() << " currentCalqueNumber       : " << currentCalqueNumber;
-    qDebug() << " numberOfCalqueToDraw      : " << numberOfCalqueToDraw;
-    qDebug() << " v_lastcalqueToDraw.size() : " << v_lastcalqueToDraw.size();
-    qDebug() << "-----------------------";
-
     const int firstIndice = std::max((currentCalqueNumber - numberOfCalqueToDraw*freqOfCalqueToDraw), 0);
 
     for (int i = currentCalqueNumber-freqOfCalqueToDraw; i >= firstIndice; i-=freqOfCalqueToDraw) {
 
-        widgetPainter.setOpacity((0.4 / (double)numberOfCalqueToDraw*freqOfCalqueToDraw) * (double)(i-firstIndice) + 0.4);
-        widgetPainter.drawImage(0,0,v_lastcalqueToDraw.at(i));
+        widgetPainter.setOpacity((0.4 / (double)(numberOfCalqueToDraw*freqOfCalqueToDraw)) * (double)(i-firstIndice) + 0.4);
+        widgetPainter.drawImage(0,0, *(v_lastcalqueToDraw->at(i)));
 
     }
     widgetPainter.setOpacity(1);
-    widgetPainter.drawImage(0,0,* calque);
-
-
+    widgetPainter.drawImage(0,0, *calque);
 
 }
 //mouvement de la sourie
@@ -135,37 +126,12 @@ void DrawingArea::mouseReleaseEvent(QMouseEvent * event){
     fPoint.setY(0);
     sPoint.setX(0);
     sPoint.setY(0);
-    v_calques.push_back(*calque);
+    v_calques.push_back(calque);
 
-}
-
-// en cas de redimensionnement de la fenêtre
-void DrawingArea::resizeEvent(QResizeEvent *event){
-
-    QSize newSize(sizeHint());
-    background = new QImage(background->scaled(newSize));
-    calque = new QImage(calque->scaled(newSize));
-
-    updateGeometry();
-
-}
-
-QSize DrawingArea::sizeHint() const {
-    QSize s = size();
-
-    if (ratio != 0.0) {
-        if (s.height() < ratio * s.width()) {
-            s.setWidth(1/ratio * s.height());
-        } else {
-            s.setHeight(ratio * s.width());
-        }
-    }
-
-    return s;
 }
 
 void DrawingArea::undo(){
-    calque = new QImage(v_calques.at(v_calques.size()-2));
+    *calque = QImage(*(v_calques.at(v_calques.size()-2)));
     update();
 }
 
@@ -185,21 +151,20 @@ void DrawingArea::setPenColor(QColor c){
     update();
 }
 
-void DrawingArea::setCalque(QImage newCalque){
-    calque = new QImage(newCalque.scaled(sizeHint()));
-    v_calques.push_back(*calque);
+void DrawingArea::setCalque(QImage *newCalque){
+    calque = newCalque;
+    v_calques.push_back(calque);
     update();
-}
-
-void DrawingArea::setRatio(double r)
-{
-    ratio = (r>=0)?r:0;
 }
 
 void DrawingArea::setBackground(QString path){
-    background= new QImage(path);
-    background = new QImage(background->scaled(sizeHint()));
+    background = new QImage(QImage(path).scaled(size(), Qt::KeepAspectRatio));
     update();
+}
+
+QSize DrawingArea::getBackgroundSize()
+{
+    return background->size();
 }
 
 void DrawingArea::hideBackground(bool hide){
@@ -213,20 +178,19 @@ QImage DrawingArea::getLastCalque(){
       calque = new QImage(this->width(),this->height(),QImage::Format_ARGB32_Premultiplied);
       calque->fill(0);
       v_calques.clear();
-      v_calques.push_back(*calque);
+      v_calques.push_back(calque);
 
       update();
    return * lastCalque;
 }
 
-void DrawingArea::setDrawingCalques(QVector<QImage> v, int nb){
+void DrawingArea::setDrawingCalques(QVector<QImage *> *v){
     v_lastcalqueToDraw=v;
-    numberOfCalqueToDraw=nb;
     update();
 }
 
-void DrawingArea::setDrawingCalques(QVector<QImage> v){
-    setDrawingCalques(v, numberOfCalqueToDraw);
+void DrawingArea::setNumberOfCalqueToDraw(int nb){
+    numberOfCalqueToDraw = nb;
 }
 
 void DrawingArea::setFreqDrawindCalques(int f)
