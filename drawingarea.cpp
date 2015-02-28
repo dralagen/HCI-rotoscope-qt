@@ -32,9 +32,6 @@ DrawingArea::DrawingArea(QWidget *parent) :
 
     background_hided = false;
 
-    //initialisation au calque vide.
-    v_calques.push_back(calque);
-
     numberOfCalqueToDraw=0;
     freqOfCalqueToDraw=1;
 
@@ -125,13 +122,18 @@ void DrawingArea::mouseReleaseEvent(QMouseEvent * ){
     fPoint.setY(0);
     sPoint.setX(0);
     sPoint.setY(0);
-    v_calques.push_back(calque);
+
+    v_calques.push_back(QImage(*calque));
 
 }
 
 void DrawingArea::undo(){
-    *calque = QImage(*(v_calques.at(v_calques.size()-2)));
-    update();
+
+    if (v_calques.size() > 1) {
+        v_calques.removeLast();
+        *calque = QImage(v_calques.last());
+        update();
+    }
 }
 
 
@@ -151,9 +153,13 @@ void DrawingArea::setPenColor(QColor c){
 }
 
 void DrawingArea::setCalque(QImage *newCalque){
-    calque = newCalque;
-    v_calques.push_back(calque);
-    update();
+    if (calque != newCalque) {
+        v_calques.clear(); // clean history
+        calque = newCalque;
+        v_calques.push_back(*calque);
+
+        update();
+    }
 }
 
 void DrawingArea::setBackground(QString path){
@@ -169,18 +175,6 @@ QSize DrawingArea::getBackgroundSize()
 void DrawingArea::hideBackground(bool hide){
     background_hided = hide;
      update();
-}
-
-QImage DrawingArea::getLastCalque(){
-
-      QImage * lastCalque= new QImage(*calque);
-      calque = new QImage(this->width(),this->height(),QImage::Format_ARGB32_Premultiplied);
-      calque->fill(0);
-      v_calques.clear();
-      v_calques.push_back(calque);
-
-      update();
-   return * lastCalque;
 }
 
 void DrawingArea::setDrawingCalques(QVector<QImage *> *v){

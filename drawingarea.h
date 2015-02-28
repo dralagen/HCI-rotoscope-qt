@@ -20,7 +20,6 @@ public:
     void setCalque(QImage *newCalque);
     void setRatio(double r);
     void hideBackground(bool hide);
-    QImage getLastCalque();
     void setDrawingCalques(QVector<QImage *> *v);
     void setNumberOfCalqueToDraw(int nb);
     void setFreqDrawindCalques(int f);
@@ -29,7 +28,7 @@ public:
 
 private:
       QImage *        calque;
-      QVector<QImage *> v_calques;
+      QVector<QImage> v_calques;
       QVector<QImage *> * v_lastcalqueToDraw;
       QImage *        background;
       bool            background_hided;

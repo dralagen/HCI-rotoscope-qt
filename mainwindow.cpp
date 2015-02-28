@@ -98,7 +98,7 @@ void MainWindow::on_actionNew_Project_triggered()
         QSize s(tmp.size());
 
         QSize sHint(s.width() + ui->widgetTools->width(),
-                    s.height() + ui->widgetNav->height() + ui->menubar->height() + 25);
+                    s.height() + ui->widgetNav->height() + ui->menubar->height() + 30);
 
         resize(sHint);
         update();
