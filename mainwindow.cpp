@@ -8,6 +8,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QEvent>
+#include <QShortcut>
 #include <dirent.h>
 #include <unistd.h>
 
@@ -44,7 +45,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->widgetRotoscope->setDrawingCalques(&v_final_calques);
 
+    playCalques = nullptr;
+
     connect(ui->widgetRotoscope, SIGNAL(undoDisabled(bool)), this, SLOT(actionUndo_setDisabled(bool)));
+
 }
 
 MainWindow::~MainWindow()
@@ -59,6 +63,7 @@ void MainWindow::resizeEvent(QResizeEvent *)
 
 void MainWindow::paintEvent(QPaintEvent *)
 {
+
     if (resized) {
         resized = false;
 
@@ -238,6 +243,9 @@ void MainWindow::showCalque(int i)
     disabled = (currentCalque >= v_final_calques.size()-1);
     this->ui->buttonLastPicture->setDisabled(disabled);
     this->ui->buttonNextPicture->setDisabled(disabled);
+
+    this->ui->widgetRotoscope->update();
+    update();
 }
 
 
@@ -438,20 +446,68 @@ void MainWindow::on_buttonPlay_clicked()
 
     ui->centralwidget->setDisabled(true);
 
-    int savedPosition = currentCalque;
-    int lastNbOfCalqToDraw=this->ui->visibleDrawing->text().toInt();
+    int *savedPosition = new int(currentCalque);
+    int *lastNbOfCalqToDraw = new int(ui->visibleDrawing->text().toInt());
     on_visibleDrawing_valueChanged(0);
 
-    for (int i = 0; i < v_final_calques.size(); ++i) {
-        showCalque(i);
-        this->ui->widgetRotoscope->repaint();
-        usleep(1000000/freqVideo); // 42000 => 24 fps
-    }
+    class PlayCalques: public QThread {
+    private :
+        MainWindow * parentWidget;
 
-    showCalque(savedPosition);
+    public:
+        PlayCalques(MainWindow * parent) {
+            parentWidget = parent;
+        }
 
-    ui->centralwidget->setDisabled(false);
-    on_visibleDrawing_valueChanged(lastNbOfCalqToDraw);
+        void run() Q_DECL_OVERRIDE {
+
+            for (int i = 0; i < parentWidget->v_final_calques.size(); ++i) {
+                parentWidget->showCalque(i);
+                //parentWidget->ui->widgetRotoscope->repaint();
+                QThread::msleep(1000/parentWidget->freqVideo);
+            }
+
+        }
+
+    };
+
+    playCalques = new PlayCalques(this);
+
+    QShortcut * shortcut = new QShortcut(QKeySequence(Qt::Key_Escape), this);
+    QObject::connect(shortcut, &QShortcut::activated, [=]() {
+        qDebug() << "stop";
+        if (playCalques->isRunning()) {
+            playCalques->terminate();
+        }
+
+    });
+
+    connect(playCalques, &PlayCalques::finished, [=]() {
+
+        qDebug() << "play finished";
+        if (shortcut != NULL) {
+            delete shortcut;
+        }
+
+        ui->centralwidget->setDisabled(false);
+        on_visibleDrawing_valueChanged(*lastNbOfCalqToDraw);
+
+        showCalque(*savedPosition);
+
+        if (savedPosition != NULL) {
+            delete savedPosition;
+        }
+
+        if (lastNbOfCalqToDraw != NULL) {
+            delete lastNbOfCalqToDraw;
+        }
+
+        update();
+
+    });
+
+    playCalques->start();
+
 }
 
 void MainWindow::initVCalques(){

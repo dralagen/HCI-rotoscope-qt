@@ -105,7 +105,6 @@ void DrawingArea::mouseMoveEvent(QMouseEvent* event){
 //clique
 void DrawingArea::mousePressEvent(QMouseEvent* event){
 
-
     if(event->button()==Qt::LeftButton){
          fPoint= event->pos();
     }

@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
+#include <QThread>
 #include <QPushButton>
 
 namespace Ui {
@@ -97,13 +97,14 @@ private:
     QVector<QImage *>  v_final_calques;
     bool               background_showed;
 
+    QThread *playCalques;
+
     QString outputBasedir = "/tmp/rotoscope/";
     int freqVideo;
 
     QVector<QPushButton *> buttonsColor;
 
     bool resized;
-
 };
 
 
