@@ -91,8 +91,13 @@ void MainWindow::on_actionNew_Project_triggered()
     NewProject newProject;
     newProject.exec();
     if (newProject.result() == QDialog::Accepted && newProject.getMovie() != "") {
+
+        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
         freqVideo = newProject.getFrequency().toInt();
+
         extractPictures(newProject.getMovie(), newProject.getFrequency());
+
 
         QImage tmp(outputBasedir+"00001.png");
 
@@ -102,13 +107,16 @@ void MainWindow::on_actionNew_Project_triggered()
                     s.height() + ui->widgetNav->height() + ui->menubar->height() + 30);
 
         resize(sHint);
-        update();
 
         QSizePolicy qsp(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
         qsp.setHeightForWidth(true);
         setSizePolicy(qsp);
 
         disableMainAction(false);
+
+        on_sizeBox_valueChanged(1);
+
+        QApplication::restoreOverrideCursor();
     }
 }
 
@@ -122,9 +130,10 @@ void MainWindow::actionUndo_setDisabled(bool b)
     ui->actionUndo->setDisabled(b);
 }
 
-void MainWindow::on_sizeBox_valueChanged(int arg1)
+void MainWindow::on_sizeBox_valueChanged(int penSize)
 {
-     this->ui->widgetRotoscope->setPenSize(arg1);
+    this->ui->widgetRotoscope->setPenSize(penSize);
+
 }
 
 void MainWindow::on_brushButton_clicked()
