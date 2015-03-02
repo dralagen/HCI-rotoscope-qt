@@ -332,7 +332,11 @@ void MainWindow::on_actionExport_to_Pictures_triggered()
 
     if (!exportBasedir.isEmpty()) {
 
+        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
         exportPictures(exportBasedir);
+
+        QApplication::restoreOverrideCursor();
 
         QMessageBox::information(this, "Export successfull", "All pictures has exported into " + exportBasedir);
 
@@ -345,6 +349,8 @@ void MainWindow::on_actionExport_to_Film_triggered()
     QString exportToFilm = fileDialogOpen(false);
 
     if (!exportToFilm.isEmpty()) {
+
+        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
         QDir exportBasedir(exportToFilm+".pictures");
 
@@ -361,7 +367,10 @@ void MainWindow::on_actionExport_to_Film_triggered()
         cmd = "rm -rf \"" + exportBasedir.absolutePath() + "\"";
         system(cmd.toStdString().data());
 
+        QApplication::restoreOverrideCursor();
+
         QMessageBox::information(this, "Export successfull", "Video has exported at " + exportToFilm);
+
     }
 }
 
