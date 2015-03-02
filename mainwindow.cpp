@@ -402,14 +402,10 @@ void MainWindow::on_actionAboutQt_triggered()
 
 void MainWindow::on_inputCurrentPicture_editingFinished()
 {
-    int newPicture = ui->inputCurrentPicture->text().toInt();
-    if(newPicture >= 0 && newPicture < v_final_calques.size()){
+    int newPicture = std::max(std::min(ui->inputCurrentPicture->text().toInt(), v_final_calques.size()) - 1, 0);
 
-        // on retrouve la dernière version du calque correspondant à l'image.
-        qDebug()<< "set du calque et du background : " + QString::number(currentCalque);
-        showCalque(newPicture);
-
-   }
+    // on retrouve la dernière version du calque correspondant à l'image.
+    showCalque(newPicture);
 
 }
 
