@@ -361,7 +361,7 @@ void MainWindow::on_actionExport_to_Film_triggered()
         cmd = "rm -rf \"" + exportBasedir.absolutePath() + "\"";
         system(cmd.toStdString().data());
 
-        QMessageBox::information(this, "Export successfull", "Video has exported at " + exportBasedir.absolutePath());
+        QMessageBox::information(this, "Export successfull", "Video has exported at " + exportToFilm);
     }
 }
 
