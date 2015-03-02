@@ -18,7 +18,7 @@ DrawingArea::DrawingArea(QWidget *parent) :
     QWidget(parent)
 {
     penColor= Qt::white;
-    penSize = 0;
+    penSize = 1;
     toolType=TOOL_NONE;
 
     calque = new QImage(this->width(),this->height(),QImage::Format_ARGB32_Premultiplied);
@@ -36,6 +36,8 @@ DrawingArea::DrawingArea(QWidget *parent) :
     freqOfCalqueToDraw=1;
 
     currentCalqueNumber=0;
+
+    setCursorSize();
 }
 
 DrawingArea::~DrawingArea(){
@@ -147,12 +149,33 @@ void DrawingArea::setTooltype(int tool){
 
 void DrawingArea::setPenSize(int size){
     this->penSize=size;
+
+    setCursorSize();
+
     update();
 }
 
 void DrawingArea::setPenColor(QColor c){
     penColor=c;
+
+    setCursorSize();
+
     update();
+}
+
+void DrawingArea::setCursorSize() {
+    int sizeCursor = std::max(penSize, 5);
+
+    QPixmap pixCursor(sizeCursor*2,sizeCursor*2);
+    pixCursor.fill(Qt::transparent);
+    QPainter paintCursor(&pixCursor);
+    QPen pen(Qt::white);
+    pen.setStyle(Qt::DotLine);
+    pen.setWidth(1);
+    paintCursor.setPen(pen);
+    paintCursor.drawEllipse(sizeCursor,sizeCursor, sizeCursor, sizeCursor);
+
+    this->setCursor(QCursor(pixCursor, sizeCursor*1.5, sizeCursor*1.5));
 }
 
 void DrawingArea::setCalque(QImage *newCalque){

@@ -43,6 +43,7 @@ private:
       //numero du calque courant  a partir du quel on dessine les n derniers.
       int             currentCalqueNumber;
 
+      void setCursorSize();
 protected:
       void paintEvent(QPaintEvent *event);
       void mouseMoveEvent(QMouseEvent *event);
