@@ -2,7 +2,7 @@
 
 It's a rotoscoping application developed for Linux with C++ and Qt.
 
-We can find the same application developed for android [here](https://github.com/dralagen/HCI-rotoscope-android)
+We can find the same application developed for Android [here](https://github.com/dralagen/HCI-rotoscope-android)
 
 To compile
 ----------
